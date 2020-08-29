@@ -1,0 +1,137 @@
+{% extends 'layout/layout.html' %}
+{% load static %}
+
+{% block title %}
+    Report
+{% endblock %}
+{% block header %}
+    <link href="{% static 'assets/plugins/custom/jstree/jstree.bundle.css' %}" rel="stylesheet" type="text/css" />
+	<link href="{% static 'assets/plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-custom gutter-b">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h3 class="card-label">Report</h3>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div id="kt_tree_2" class="tree-demo">
+                                    <ul>
+                                        <li>Contacts
+                                            <ul>
+                                                <!-- <li data-jstree='{ "icon" : "flaticon2-analytics text-success " }'>custom -->
+                                                <!-- icon URL</li> -->
+                                                <li data-jstree='{ "opened" : true }'>Address Listing
+                                                    <ul>
+                                                        <li data-jstree='{ "type" : "file" }' data-toggle="modal"
+                                                            data-target="#editTemplate">New document
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li data-jstree='{ "opened" : true }'>Tel list
+                                                    <ul>
+                                                        <li data-jstree='{ "type" : "file" }'>New document</li>
+                                                    </ul>
+                                                </li>
+                                                <li data-jstree='{ "opened" : true }'>City list
+                                                    <ul>
+                                                        <li data-jstree='{ "type" : "file" }'>New document</li>
+                                                    </ul>
+                                                </li>
+                                                <li data-jstree='{ "opened" : true }'>Occupation
+                                                    <ul>
+                                                        <li data-jstree='{ "type" : "file" }'>New document</li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li>Task
+                                            <ul>
+                                                <li data-jstree='{ "opened" : true }'>Task Category
+                                                    <ul>
+                                                        <li data-jstree='{ "type" : "file" }'>New document</li>
+                                                    </ul>
+                                                </li>
+                                                <li data-jstree='{ "opened" : true }'>Task owner
+                                                    <ul>
+                                                        <li data-jstree='{ "type" : "file" }'>New document</li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li>Staff
+                                            <ul>
+                                                <li data-jstree='{ "opened" : true }'>Phone numer
+                                                    <ul>
+                                                        <li data-jstree='{ "type" : "file" }'>New document</li>
+                                                    </ul>
+                                                </li>
+                                                <li data-jstree='{ "opened" : true }'>Address
+                                                    <ul>
+                                                        <li data-jstree='{ "type" : "file" }'>New document</li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-md-3 col-form-label text-right">Template name: </label>
+                                    <div class="col-lg-6 col-md-3">
+                                        <input type="email" class="form-control" placeholder="Type the name"/>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3">
+                                        <button class="btn btn-primary mr-2">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-label text-right">@2020 ODOO report system</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editTemplate" tabindex="-1" role="dialog" aria-labelledby="editTemplate"
+		aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="editTemplate">
+						<i class="ki ki-outline-info" style="color:  green"></i> &nbsp;Information
+					</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<i aria-hidden="true" class="ki ki-close"></i>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="alert alert-secondary">
+						You can edit the template
+					</div>
+				</div>
+				<div class="modal-footer">
+					<form action="/edit" method="GET">
+						<!-- <button type="button" class="btn btn-primary font-weight-bold">Edit</button> -->
+						<a href="/edit"><button type="button" class="btn btn-primary font-weight-bold">Edit</button></a>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% block footer %}
+    <script src="{% static 'assets/plugins/custom/jstree/jstree.bundle.js' %}"></script>
+    <script src="{% static 'assets/js/pages/features/miscellaneous/treeview.js' %}"></script>
+{% endblock %}
