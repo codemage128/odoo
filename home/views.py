@@ -75,7 +75,19 @@ class ReportView(View):
         except:
             message = False
         return render(request, self.template_name, {"data": self.response, "message": message})
-        # return redirect('report')
 
-class EditorView(TemplateView):
+
+class EditorView(View):
     template_name = 'edit.html'
+
+    def __init__(self):
+        pass
+
+    def get(self, request):
+        templateId = request.GET.get('templateId')
+        template = Template.objects.get(pk=templateId)
+        returnData = {"style": template.category, "name": template.name}
+        return render(request, self.template_name, returnData)
+
+    def post(self, request, *args, **kwargs):
+        return render(request, self.template_name)
