@@ -7,11 +7,9 @@ from home.models import Template
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
-
 # Create your views here.
 def index(request):
-    return redirect('index')
-
+    return redirect('report')
 
 class IndexView(TemplateView):
     template_name = "index.html"

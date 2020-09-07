@@ -5,24 +5,24 @@
     Report
 {% endblock %}
 {% block header %}
-    <link href="{% static 'assets/plugins/custom/jstree/jstree.bundle.css' %}" rel="stylesheet" type="text/css"/>
-    <link href="{% static 'assets/plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet"
+    <link href="{% static 'assets/global/plugins/jstree/dist/themes/default/style.min.css' %}" rel="stylesheet"
           type="text/css"/>
 {% endblock %}
 {% block content %}
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div class="card card-custom gutter-b">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <h3 class="card-label">Report</h3>
+                <div class="portlet light bordered">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="icon-social-dribbble font-blue-sharp"></i>
+                            <span class="caption-subject font-blue-sharp bold uppercase">Report</span>
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="portlet-body">
                         <div class="row">
                             <div class="col-md-4">
-                                <div id="kt_tree_2" class="tree-demo">
+                                <div id="tree_1" class="tree-demo">
                                     <ul>
                                         <li data-jstree='{ "opened" : true }'>Contacts
                                             <ul>
@@ -30,7 +30,7 @@
                                                     <ul>
                                                         {% for addressList in data.addressList %}
                                                             <li data-jstree='{ "type" : "file" }' data-toggle="modal"
-                                                                data-target="#editTemplate" class="list"
+                                                                href="#basic" class="list"
                                                                 data-id="{{ addressList.id }}">{{ addressList.name }}
                                                             </li>
                                                         {% endfor %}
@@ -40,7 +40,7 @@
                                                     <ul>
                                                         {% for telList in data.telList %}
                                                             <li data-jstree='{ "type" : "file" }' data-toggle="modal"
-                                                                data-target="#editTemplate" class="list"
+                                                                href="#basic" class="list"
                                                                 data-id="{{ telList.id }}">{{ telList.name }}
                                                             </li>
                                                         {% endfor %}
@@ -50,7 +50,7 @@
                                                     <ul>
                                                         {% for cityList in data.cityList %}
                                                             <li data-jstree='{ "type" : "file" }' data-toggle="modal"
-                                                                data-target="#editTemplate" class="list"
+                                                                href="#basic" class="list"
                                                                 data-id="{{ cityList.id }}">{{ cityList.name }}
                                                             </li>
                                                         {% endfor %}
@@ -60,7 +60,7 @@
                                                     <ul>
                                                         {% for occupationList in data.occupationList %}
                                                             <li data-jstree='{ "type" : "file" }' data-toggle="modal"
-                                                                data-target="#editTemplate" class="list"
+                                                                href="#basic" class="list"
                                                                 data-id="{{ occupationList.id }}">{{ occupationList.name }}
                                                             </li>
                                                         {% endfor %}
@@ -74,7 +74,7 @@
                                                     <ul>
                                                         {% for taskCategoryList in data.taskCategoryList %}
                                                             <li data-jstree='{ "type" : "file" }' data-toggle="modal"
-                                                                data-target="#editTemplate" class="list"
+                                                                href="#basic" class="list"
                                                                 data-id="{{ taskCategoryList.id }}">{{ taskCategoryList.name }}
                                                             </li>
                                                         {% endfor %}
@@ -84,7 +84,7 @@
                                                     <ul>
                                                         {% for taskOwnerList in data.taskOwnerList %}
                                                             <li data-jstree='{ "type" : "file" }' data-toggle="modal"
-                                                                data-target="#editTemplate" class="list"
+                                                                href="#basic" class="list"
                                                                 data-id="{{ taskOwnerList.id }}">{{ taskOwnerList.name }}
                                                             </li>
                                                         {% endfor %}
@@ -98,7 +98,7 @@
                                                     <ul>
                                                         {% for phoneList in data.phoneList %}
                                                             <li data-jstree='{ "type" : "file" }' data-toggle="modal"
-                                                                data-target="#editTemplate" class="list"
+                                                                href="#basic" class="list"
                                                                 data-id="{{ phoneList.id }}">{{ phoneList.name }}
                                                             </li>
                                                         {% endfor %}
@@ -108,7 +108,7 @@
                                                     <ul>
                                                         {% for staff_addressList in data.staff_addressList %}
                                                             <li data-jstree='{ "type" : "file" }' data-toggle="modal"
-                                                                data-target="#editTemplate" class="list"
+                                                                href="#basic" class="list"
                                                                 data-id="{{ staff_addressList.id }}">{{ staff_addressList.name }}
                                                             </li>
                                                         {% endfor %}
@@ -123,7 +123,7 @@
                                 <form action="/report/" method="post">
                                     {% csrf_token %}
                                     <div class="form-group row">
-                                        <div class="col-6 offset-3">
+                                        <div class="col-md-6 col-md-offset-3">
                                             {% if message %}
                                                 {% if message is True %}
                                                     <div class="alert alert-success">
@@ -216,52 +216,45 @@
 
                                     </div>
                                     <div class="form-group row">
-                                        <div class="col-lg-6 offset-3">
-                                            <button class="btn btn-primary mr-2">Add</button>
+                                        <div class="col-md-6 col-md-offset-3">
+                                            <button class="btn btn-primary margin-right-10">Add</button>
                                         </div>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <p class="card-label text-right">@2020 ODOO report system</p>
-                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="modal fade" id="editTemplate" tabindex="-1" role="dialog" aria-labelledby="editTemplate"
-         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editTemplate">
-                        <i class="ki ki-outline-info" style="color:  green"></i> &nbsp;Do you wanna edit?
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <i aria-hidden="true" class="ki ki-close"></i>
-                    </button>
+        <div class="modal fade" id="basic" tabindex="-1" role="basic" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title">&nbsp;Do you wanna edit?</h4>
+                    </div>
+                    <div class="modal-body"> You can edit the report template. Please go head!</div>
+                    <div class="modal-footer">
+                        <form action="/edit">
+                            <input type="hidden" name="templateId" id="templateId"/>
+                            <button type="button" class="btn btn-secondary font-weight-bold" data-dismiss="modal">Cancel
+                            </button>
+                            <button type="submit" class="btn btn-primary font-weight-bold">Edit</button>
+                        </form>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <h5>You can edit the report template. Please go head!</h5>
-
-                </div>
-                <div class="modal-footer">
-                    <form action="/edit">
-                        <input type="hidden" name="templateId" id="templateId"/>
-                        <button type="button" class="btn btn-secondary font-weight-bold" data-dismiss="modal">Cancel
-                        </button>
-                        <button type="submit" class="btn btn-primary font-weight-bold">Edit</button>
-                    </form>
-                </div>
+                <!-- /.modal-content -->
             </div>
+            <!-- /.modal-dialog -->
         </div>
     </div>
 {% endblock %}
 {% block footer %}
-    <script src="{% static 'assets/plugins/custom/jstree/jstree.bundle.js' %}"></script>
-    <script src="{% static 'assets/js/pages/features/miscellaneous/treeview.js' %}"></script>
+    <script src="{% static 'assets/global/plugins/jstree/dist/jstree.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'assets/pages/scripts/ui-tree.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'assets/global/plugins/jquery-ui/jquery-ui.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'assets/pages/scripts/ui-modals.min.js' %}" type="text/javascript"></script>
     <script>
         $(function () {
             $(document).on('click', '.list', function () {
