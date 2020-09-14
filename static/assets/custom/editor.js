@@ -5,6 +5,8 @@ $(function () {
     var imageIdList = [];
     var textFocus = "";
     var imageFocus = "";
+    var headerList = [];
+    var footerList = [];
 
     //Display the content when the button on the top bar------
     function changeContentDisplay(type) {
@@ -27,23 +29,66 @@ $(function () {
         }
     }
 
-    function draggableElement() {
-        $('#viewPanel>div').css('width', 'fit-content');
-        $('#viewPanel>img').css('width', '50%');
+    // function myHelper(event){
+    //     return '<div id="draggableHelper">I am a helper - drag me!</div>';
+    // }
+    $("#footer").droppable({
+        drop: function (event, ui) {
+            if (footerList.length == 0) {
+                footerList.push(textFocus);
+            }
+            if (footerList.indexOf(textFocus) == -1) {
+                footerList.push(textFocus);
+            }
+            $('#footer-list').empty();
+            for (var i = 0; i < footerList.length; i++) {
+                var element = '#' + footerList[i];
+                var template = '<li class="list-group-item">' + $(element).text() + '</li>';
+                $('#footer-list').append(template);
+            }
+        }
+    });
 
+    $("#header").droppable({
+        drop: function (event, ui) {
+            if (headerList.length == 0) {
+                headerList.push(textFocus);
+            }
+            if (headerList.indexOf(textFocus) == -1) {
+                headerList.push(textFocus);
+            }
+            $('#header-list').empty();
+            for (var i = 0; i < headerList.length; i++) {
+                var element = '#' + headerList[i];
+                var template = '<li class="list-group-item">' + $(element).text() + '</li>';
+                $('#header-list').append(template);
+            }
+        }
+    });
+    $("#viewPanel").droppable({
+        drop: function (event, ui) {
+        }
+    });
+
+
+    function draggableElement() {
+        $('#viewPanel>img').css('width', '50%');
         $('#viewPanel>div, #viewPanel>img, #viewPanel>table').css('cursor', 'move');
         $('#viewPanel>div, #viewPanel>img').css('position', 'absolute');
-
+        $('#viewPanel>div').css('width', 'fit-content');
         $('#viewPanel>div, #viewPanel>table, #viewPanel>img').draggable({
-            containment: "parent",
+            containment: "#board",
             start: function (event, ui) {
                 var startpos = $(this).position();
                 switch ($(this).prop("tagName")) {
                     case "DIV":
                         changeContentDisplay(1);
+                        $('#text-text').val("");
+                        textFocus = $(this).attr('id');
                         break;
                     case "IMG":
                         changeContentDisplay(2);
+                        imageFocus = $(this).attr('id');
                         break;
                     case "TABLE":
                         changeContentDisplay(3);
@@ -65,9 +110,45 @@ $(function () {
                     case "TABLE":
                         break;
                 }
-            }
+            },
         });
     }
+
+    $('.header-item').draggable({
+        containment: "#board",
+        start: function (event, ui) {
+            var startpos = $(this).position();
+            switch ($(this).prop("tagName")) {
+                case "DIV":
+                    changeContentDisplay(1);
+                    textFocus = $(this).attr('id');
+                    break;
+                case "IMG":
+                    changeContentDisplay(2);
+                    imageFocus = $(this).attr('id');
+                    break;
+                case "TABLE":
+                    changeContentDisplay(3);
+                    break;
+            }
+        },
+        stop: function (event, ui) {
+            switch ($(this).prop("tagName")) {
+                case "DIV":
+                    $('#text-position-x').val($(this).css('left'));
+                    $('#text-position-y').val($(this).css('top'));
+                    textFocus = $(this).attr('id');
+                    break;
+                case "IMG":
+                    $('#image-position-x').val($(this).css('left'));
+                    $('#image-position-y').val($(this).css('top'));
+                    imageFocus = $(this).attr('id');
+                    break;
+                case "TABLE":
+                    break;
+            }
+        },
+    });
 
     //Button click event
     $('.btn').click(function () {
@@ -78,19 +159,26 @@ $(function () {
             // Buttons of the top menu bar
             case "btn-text":
                 changeContentDisplay(1);
+                $('#text-text').val("");
                 var d = new Date();
                 var _id = d.getTime();
                 textIdList.push(_id);
-                var template = "<div id='" + _id + "'>Text</div>";
+                var template = "<div id='" + _id + "' style='z-index: 1'>Text</div>";
                 $('#viewPanel').append(template);
                 draggableElement();
+                // var currentMousePos = { x: -1, y: -1 };
+                // $(document).mousemove(function (event) {
+                //     currentMousePos.x = event.pageX;
+                //     currentMousePos.y = event.pageY;
+                // });
+                // console.log(currentMousePos);
                 break;
             case "btn-image":
                 var d = new Date();
                 var _id = d.getTime();
                 imageIdList.push(_id);
                 changeContentDisplay(2);
-                var template = '<img src="https://www.w3schools.com/images/picture.jpg"\n' +
+                var template = '<img style=\'z-index: 1\' src="https://www.w3schools.com/images/picture.jpg"\n' +
                     '     alt="MDN logo" id="' + _id + '">';
                 $('#viewPanel').append(template);
                 draggableElement();
@@ -108,6 +196,10 @@ $(function () {
                 draggableElement();
                 break;
             case "btn-prev":
+                $('#basic').modal({});
+                var _html = $('#board').html();
+                console.log(_html);
+                $('#modal-view').html(_html);
                 break;
             case "btn-save":
                 break;
@@ -232,7 +324,7 @@ $(function () {
             case "image-height":
                 $(_image_id).css('height', _value);
                 break;
-             case "image-background":
+            case "image-background":
                 $(_image_id).css('background', _value);
                 break;
             case "image-padding-left":

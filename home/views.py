@@ -7,13 +7,14 @@ from home.models import Template
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
+
 # Create your views here.
 def index(request):
     return redirect('report')
 
+
 class IndexView(TemplateView):
     template_name = "index.html"
-
 
 class ReportView(View):
     template_name = 'reports.html'
@@ -73,7 +74,6 @@ class ReportView(View):
         except:
             message = False
         return render(request, self.template_name, {"data": self.response, "message": message})
-
 
 class EditorView(View):
     template_name = 'edit.html'
