@@ -7,7 +7,6 @@ $(function () {
     var imageFocus = "";
     var headerList = [];
     var footerList = [];
-
     //Display the content when the button on the top bar------
     function changeContentDisplay(type) {
         switch (type) {
@@ -69,13 +68,13 @@ $(function () {
         drop: function (event, ui) {
         }
     });
-
-
+    draggableElement();
+    $('#viewPanel>div, #viewPanel>img').css('width', 'fit-content !important');
     function draggableElement() {
-        $('#viewPanel>img').css('width', '50%');
         $('#viewPanel>div, #viewPanel>img, #viewPanel>table').css('cursor', 'move');
         $('#viewPanel>div, #viewPanel>img').css('position', 'absolute');
         $('#viewPanel>div').css('width', 'fit-content');
+        $('#viewPanel>img').css('width', 'fit-content');
         $('#viewPanel>div, #viewPanel>table, #viewPanel>img').draggable({
             containment: "#board",
             start: function (event, ui) {
@@ -157,6 +156,11 @@ $(function () {
         var focus_id = "#" + textFocus;
         switch (id) {
             // Buttons of the top menu bar
+            case 'btn-refresh':
+                $('#viewPanel').empty();
+                $('#header-list').empty();
+                $('#footer-list').empty();
+                break;
             case "btn-text":
                 changeContentDisplay(1);
                 $('#text-text').val("");
@@ -196,12 +200,52 @@ $(function () {
                 draggableElement();
                 break;
             case "btn-prev":
-                $('#basic').modal({});
                 var _html = $('#board').html();
+                var templateId = $('#templateId').val();
                 console.log(_html);
-                $('#modal-view').html(_html);
+                $.ajax({
+                    url: '/saveTemplate/',
+                    type: "post",
+                    data: {structure: _html, templateId: templateId},
+                    success: function (data) {
+                        console.log("template is saved!");
+                        location.replace('/view?templateId=' + templateId);
+                    }
+                })
+                var _variable = [];
+
+                // for(var i = 0; i < headerList.length; i ++) {
+                //     var _id = "#" + headerList[i];
+                //     var _text = $(_id).text();
+                //     console.log(_text.charAt(0));
+                //     if(_text.charAt(0) == "@"){
+                //         // this is the varialble of the users.
+                //         _variable.push(_text.substring(1));
+                //     }
+                // }
+                // $.ajax({
+                //     url: '/getInfor/',
+                //     type: "post",
+                //     data: {structure: _html, templateId: templateId},
+                //     success: function (data) {
+                //         console.log(data);
+                //     }
+                // })
+                // console.log(_variable);
+
+                // $('#modal-view').html(_html);
                 break;
             case "btn-save":
+                var _html = $('#board').html();
+                var templateId = $('#templateId').val();
+                $.ajax({
+                    url: '/saveTemplate/',
+                    type: "post",
+                    data: {structure: _html, templateId: templateId},
+                    success: function (data) {
+                        $('#save').modal({});
+                    }
+                })
                 break;
             case "btn-download":
                 break;

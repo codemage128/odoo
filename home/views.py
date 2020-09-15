@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 from django.views import View
-from home.models import Template
-
+from home.models import Template, User, Address
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+import json
 
 
 # Create your views here.
@@ -15,6 +16,7 @@ def index(request):
 
 class IndexView(TemplateView):
     template_name = "index.html"
+
 
 class ReportView(View):
     template_name = 'reports.html'
@@ -75,6 +77,7 @@ class ReportView(View):
             message = False
         return render(request, self.template_name, {"data": self.response, "message": message})
 
+
 class EditorView(View):
     template_name = 'edit.html'
 
@@ -84,8 +87,38 @@ class EditorView(View):
     def get(self, request):
         templateId = request.GET.get('templateId')
         template = Template.objects.get(pk=templateId)
-        returnData = {"style": template.category, "name": template.name}
+        structure = template.structure
+        returnData = {"style": template.category, "name": template.name, "templateId": templateId,
+                      "structure": structure}
         return render(request, self.template_name, returnData)
 
     def post(self, request, *args, **kwargs):
         return render(request, self.template_name)
+
+
+class Preview(View):
+    template_name = "view.html"
+
+    def get(self, request):
+        templateId = request.GET.get('templateId')
+        template = Template.objects.get(pk=templateId)
+        structure = template.structure
+        user = User.objects.get(pk=1)
+        addressList = Address.objects.all()
+        returnData = {"style": template.category, "name": template.name, "templateId": templateId,
+                      "structure": structure, "username": user.name, 'useremail': user.email, 'useraddress': user.address, 'userphone': user.phone, "addressList": addressList}
+        return render(request, self.template_name, returnData)
+
+    def post(self, request, *args, **kwargs):
+        return render(request, self.template_name)
+
+
+@csrf_exempt
+def saveTemplate(request):
+    if request.method == "POST" and request.is_ajax():
+        templateId = request.POST.get('templateId')
+        content = request.POST.get('structure')
+        template = Template.objects.get(pk=templateId)
+        template.structure = content
+        template.save()
+        return HttpResponse(template)

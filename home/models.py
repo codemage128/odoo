@@ -4,7 +4,7 @@ class Template(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
     category = models.CharField(max_length=255)
-    structure = models.CharField(max_length=255)
+    structure = models.TextField(max_length=255)
 
 class User(models.Model):
     id = models.AutoField(primary_key=True)
