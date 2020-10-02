@@ -86,10 +86,14 @@ class EditorView(View):
 
     def get(self, request):
         templateId = request.GET.get('templateId')
-        template = Template.objects.get(pk=templateId)
-        structure = template.structure
-        returnData = {"style": template.category, "name": template.name, "templateId": templateId,
+        returnData = ""
+        try:
+            template = Template.objects.get(pk=templateId)
+            structure = template.structure
+            returnData = {"style": template.category, "name": template.name, "templateId": templateId,
                       "structure": structure}
+        except:
+            returnData = None
         return render(request, self.template_name, returnData)
 
     def post(self, request, *args, **kwargs):
