@@ -90,8 +90,22 @@ class EditorView(View):
         try:
             template = Template.objects.get(pk=templateId)
             structure = template.structure
+            headerList = [
+                {
+                    "title": "name",
+                    "value": "Metronic Version",
+                },
+                {
+                    "title": "email",
+                    "value": "admin@admin.com",
+                },
+                {
+                    "title": "phone",
+                    "value": "123456789",
+                }
+            ]
             returnData = {"style": template.category, "name": template.name, "templateId": templateId,
-                      "structure": structure}
+                          "structure": structure, "headerList" : headerList}
         except:
             returnData = None
         return render(request, self.template_name, returnData)
@@ -110,7 +124,8 @@ class Preview(View):
         user = User.objects.get(pk=1)
         addressList = Address.objects.all()
         returnData = {"style": template.category, "name": template.name, "templateId": templateId,
-                      "structure": structure, "username": user.name, 'useremail': user.email, 'useraddress': user.address, 'userphone': user.phone, "addressList": addressList}
+                      "structure": structure, "username": user.name, 'useremail': user.email,
+                      'useraddress': user.address, 'userphone': user.phone, "addressList": addressList}
         return render(request, self.template_name, returnData)
 
     def post(self, request, *args, **kwargs):

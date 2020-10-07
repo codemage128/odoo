@@ -32,7 +32,7 @@ var ComponentsColorPickers = function() {
                     if (!hex) return;
                     if (opacity) hex += ', ' + opacity;
                     if (typeof console === 'object') {
-                        console.log(hex);
+                        // console.log(hex);
                     }
                 },
                 theme: 'bootstrap'
