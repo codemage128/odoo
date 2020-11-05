@@ -8,7 +8,6 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 import json
 
-
 # Create your views here.
 def index(request):
     return redirect('report')
