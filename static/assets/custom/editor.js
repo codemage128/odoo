@@ -23,16 +23,16 @@ $('#text-font').fontselect({
     placeholderSearch: 'Type to search...',
     lookahead: 4
 }).on('change', function () {
-        var font = this.value;
-        font = font.replace(/\+/g, ' ');
-        // Split font into family and weight
-        font = font.split(':');
-        var fontFamily = font[0];
-        var fontWeight = font[1] || 400;
-        if (focusId != "") {
-            $("#" + focusId + ">p").css({fontFamily: "'" + fontFamily + "'", fontWeight: fontWeight});
-        }
-    });
+    var font = this.value;
+    font = font.replace(/\+/g, ' ');
+    // Split font into family and weight
+    font = font.split(':');
+    var fontFamily = font[0];
+    var fontWeight = font[1] || 400;
+    if (focusId != "") {
+        $("#" + focusId + ">p").css({fontFamily: "'" + fontFamily + "'", fontWeight: fontWeight});
+    }
+});
 
 function changeContentDisplay(type) {
     switch (type) {
@@ -94,17 +94,16 @@ $('.btn').click(function () {
         case "btn-prev":
             var _html = $('.content').html();
             var templateId = $('#templateId').val();
-            console.log(_html);
+            // printPDF(_html);
             $.ajax({
                 url: '/saveTemplate/',
                 type: "post",
-                data: {structure: _html, templateId: templateId},
+                data: {structure: _html, templateId: templateId, list: tableHeaderList.toString()},
                 success: function (data) {
-                    console.log("template is saved!");
-                    location.replace('/view?templateId=' + templateId);
+                    location.replace('/view?templateId=' + templateId + '&headerList=' + tableHeaderList.toString());
                 }
             })
-            // var _variable = [];
+            var _variable = [];
             break;
         case "btn-save":
             var _html = $('.content').html();
@@ -119,6 +118,7 @@ $('.btn').click(function () {
             })
             break;
         case "btn-download":
+            $('#download').submit();
             break;
         case "text-bold":
             $(this).toggleClass('active');
@@ -186,6 +186,9 @@ $('.btn').click(function () {
             break;
         case 'confirm':
             var _tablecontent = $('#table-display').html();
+            var tableField = $('#my_multi_select1').val();
+            tableHeaderList = tableField;
+            console.log(tableField);
             $('#table-edit').modal('hide');
             changeContentDisplay(3);
             var d = new Date();
@@ -469,6 +472,7 @@ function displayheaderbar() {
         $('#header-list').append(template);
     }
 }
+
 function displaybodybar() {
     $('#body-list').empty();
     for (var i = 0; i < bodyList.length; i++) {
