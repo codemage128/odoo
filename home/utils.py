@@ -24,7 +24,8 @@ def render_to_pdf(template_src, context_dict={}):
     fileName = formTemplate.category + formTemplate.name
     data = {}
     if conditionStr is "":
-        data = Data.objects.raw("select id from home_data")
+        data = {}
+        # data = Data.objects.raw("select id from home_data")
     else:
         data = Data.objects.raw("select id," + conditionStr + " from home_data")
     # data = Data.objects.all()
