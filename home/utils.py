@@ -22,7 +22,11 @@ def render_to_pdf(template_src, context_dict={}):
     headerList = context_dict['headerlist']
     conditionStr = listToString(headerList)
     fileName = formTemplate.category + formTemplate.name
-    data = Data.objects.raw("select id," + conditionStr + " from home_data")
+    data = {}
+    if conditionStr is "":
+        data = Data.objects.raw("select id from home_data")
+    else:
+        data = Data.objects.raw("select id," + conditionStr + " from home_data")
     # data = Data.objects.all()
     dict_obj = serializers.serialize('json', data)
     dict_obj = json.loads(dict_obj)

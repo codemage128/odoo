@@ -214,8 +214,12 @@ class GeneratePDF(View):
 def GeneratePdf(request):
     headerlist = []
     templateId = request.GET.get('templateId')
-    headerlist = request.GET.get('headerList')
-    headerlist = headerlist.split(",")
+    headerlist = ""
+    if request.GET.get('headerList') is "":
+        headerlist = []
+    else:
+        headerlist = request.GET.get('headerList')
+        headerlist = headerlist.split(",")
     template = Template.objects.get(pk=templateId)
     data = {
         "form_template": template,
@@ -223,3 +227,4 @@ def GeneratePdf(request):
     }
     pdf = render_to_pdf('pdf/sample.html', data)
     return HttpResponse(pdf, content_type='application/pdf')
+    # return HttpResponse()
