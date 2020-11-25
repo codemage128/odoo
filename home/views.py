@@ -19,11 +19,6 @@ import string
 def index(request):
     return redirect('report')
 
-
-class IndexView(TemplateView):
-    template_name = "index.html"
-
-
 class ReportView(View):
     template_name = 'reports.html'
     # contact List
@@ -185,7 +180,6 @@ def saveTemplate(request):
         return HttpResponse()
         # pdf = render_to_pdf('pdf/sample.html', data)
         # return HttpResponse(pdf, content_type='application/pdf')
-
 
 @csrf_exempt
 class GeneratePDF(View):
