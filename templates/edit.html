@@ -61,6 +61,72 @@ License: You must have a valid license purchased only from themeforest(the above
     <link rel="stylesheet" type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/styles/github.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'assets/custom/jquery.fontselect.css' %}">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style>
+        .ui-tooltip, .arrow:after {
+            background: black;
+            border: 2px solid white;
+        }
+
+        .ui-tooltip {
+            padding: 10px 20px;
+            color: white;
+            border-radius: 20px;
+            font: bold 14px "Helvetica Neue", Sans-Serif;
+            text-transform: uppercase;
+            box-shadow: 0 0 7px black;
+        }
+
+        .arrow {
+            width: 70px;
+            height: 16px;
+            overflow: hidden;
+            position: absolute;
+            left: 50%;
+            margin-left: -35px;
+            bottom: -16px;
+        }
+
+        .arrow.top {
+            top: -16px;
+            bottom: auto;
+        }
+
+        .arrow.left {
+            left: 20%;
+        }
+
+        .arrow:after {
+            content: "";
+            position: absolute;
+            left: 20px;
+            top: -20px;
+            width: 25px;
+            height: 25px;
+            box-shadow: 6px 5px 9px -9px black;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+
+        .arrow.top:after {
+            bottom: -20px;
+            top: auto;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px;
+        }
+    </style>
 </head>
 <!-- END HEAD -->
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
@@ -140,61 +206,353 @@ License: You must have a valid license purchased only from themeforest(the above
             <!-- END PAGE BAR -->
             <div class="row">
                 <div class="col-xs-1 col-md-1 margin-top-10">
-                    <a href="javascript:" class="icon-btn" data-toggle="tooltip" data-placement="right" title="Header">
+                    <a href="javascript:onPlace(1);" class="icon-btn" title="Header">
                         <i class="fa fa-file-o"></i>
                         <div> Header</div>
                     </a>
-                    <a href="javascript:" class="icon-btn" data-toggle="tooltip" data-placement="right" title="Footer">
+                    <a href="javascript:onPlace(2);" class="icon-btn" data-toggle="tooltip" data-placement="right"
+                       title="Footer">
                         <i class="fa fa-file-o"></i>
                         <div> Footer</div>
                     </a>
-                    <a href="javascript:" class="icon-btn" data-toggle="tooltip" data-placement="right" title="Simple">
+                    <a href="javascript:onPlace(3);" class="icon-btn" data-toggle="tooltip" data-placement="right"
+                       title="Simple">
                         <i class="fa fa-font"></i>
                         <div> Text</div>
                     </a>
-                    <a href="javascript:" class="icon-btn" data-toggle="tooltip" data-placement="right" title="Image">
+                    <a href="javascript:onPlace(4);" class="icon-btn" data-toggle="tooltip" data-placement="right"
+                       title="Image">
                         <i class="fa fa-image"></i>
                         <div> Image</div>
                     </a>
-                    <a href="javascript:" class="icon-btn" data-toggle="tooltip" data-placement="right" title="Table">
+                    <a href="javascript:onPlace(5);" class="icon-btn" data-toggle="tooltip" data-placement="right"
+                       title="Table">
                         <i class="fa fa-table"></i>
                         <div> Table</div>
                     </a>
-                    <a href="javascript:" class="icon-btn" data-toggle="tooltip" data-placement="right" title="???">
+                    <a href="javascript:onPlace(-1);" class="icon-btn" data-toggle="tooltip" data-placement="right"
+                       title="???">
                         <i class="fa fa-envelope"></i>
                         <div></div>
                     </a>
-                    <a href="javascript:" class="icon-btn" data-toggle="tooltip" data-placement="right" title="???">
+                    <a href="javascript:onPlace(-1);" class="icon-btn" data-toggle="tooltip" data-placement="right"
+                       title="???">
                         <i class="fa fa-bullhorn"></i>
                         <div></div>
                     </a>
-                    <a href="javascript:" class="icon-btn" data-toggle="tooltip" data-placement="right" title="???">
+                    <a href="javascript:onPlace(-1);" class="icon-btn" data-toggle="tooltip" data-placement="right"
+                       title="???">
                         <i class="fa fa-map-marker"></i>
                         <div></div>
                     </a>
-                    <a href="javascript:" class="icon-btn" data-toggle="tooltip" data-placement="right" title="???">
+                    <a href="javascript:onPlace(-1);" class="icon-btn" data-toggle="tooltip" data-placement="right"
+                       title="???">
                         <i class="fa fa-money"></i>
                         <div></div>
                     </a>
-                    <a href="javascript:" class="icon-btn" data-toggle="tooltip" data-placement="right" title="???">
+                    <a href="javascript:onPlace(-1);" class="icon-btn" data-toggle="tooltip" data-placement="right"
+                       title="???">
                         <i class="fa fa-plane"></i>
                         <div></div>
                     </a>
-                    <a href="javascript:" class="icon-btn" data-toggle="tooltip" data-placement="right" title="???">
+                    <a href="javascript:onPlace(-1);" class="icon-btn" data-toggle="tooltip" data-placement="right"
+                       title="???">
                         <i class="fa fa-thumbs-up"></i>
                         <div></div>
                     </a>
                 </div>
                 <div class="col-xs-8 col-md-8 margin-top-10">
                     <div class="content bg-white" style="width: 793.41px;height: 1122.1px;">
+                        {#                        <div class="component header"#}
+                        {#                             style="position:absolute; width: 793.41px;border: 1px dotted black; height: 100px;"></div>#}
+                        {#                        <div class="component footer"#}
+                        {#                             style="position:absolute;bottom:0; width: 793.41px;border: 1px dotted black; height: 100px;"></div>#}
+                        {#                        <div class="resizable draggable component"#}
+                        {#                             style="position:absolute; cursor:move; border: 1px dotted black; width: 100px; height: 50px;">#}
+                        {#                            <div class="editable" style="cursor:auto;">That is the best way to get the money</div>#}
+                        {#                        </div>#}
+                        {#                        <div class="draggable component" style="display:inline-block; position:absolute;">#}
+                        {#                            <img class="resizable" src="http://www.google.com.br/images/srpr/logo3w.png"/>#}
+                        {#                        </div>#}
+                        {#                        <div class="table-content draggable component"#}
+                        {#                             style="display: inline-block; position:absolute;">#}
+                        {#                            <table>#}
+                        {#                                <tr>#}
+                        {#                                    <th class="editable">Double Click</th>#}
+                        {#                                    <th class="editable">Double Click</th>#}
+                        {#                                    <th class="editable">Double Click</th>#}
+                        {#                                </tr>#}
+                        {#                                <tr>#}
+                        {#                                    <th class="editable">Double Click</th>#}
+                        {#                                    <th class="editable">Double Click</th>#}
+                        {#                                    <th class="editable">Double Click</th>#}
+                        {#                                </tr>#}
+                        {#                            </table>#}
+                        {#                        </div>#}
                     </div>
                 </div>
-                <div class="col-xs-3 col-md-3 bg-white" style="height:100vh">
+                <div class="col-xs-3 col-md-3 bg-white" style="height:150vh">
+                    <div class="portlet-body form" id="header-panel">
+                        <div class="form-body">
+                            <h3 class="text-info">Header Panel</h3>
+                            <hr>
+                            <div class="form-group form-md-line-input">
+                                <input type="number" class="form-control" id="form_control_1"
+                                       placeholder="Type the value" min="0">
+                                <label for="form_control_1">Height (px)</label>
+                                <span class="help-block">Type the header height(number)...</span>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                <input type="color" class="form-control" id="form_control_1"
+                                       placeholder="Type the value">
+                                <label for="form_control_1">Background</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portlet-body form" id="footer-panel">
+                        <div class="form-body">
+                            <h3 class="text-info">Footer Panel</h3>
+                            <hr>
+                            <div class="form-group form-md-line-input">
+                                <input type="number" class="form-control" id="form_control_1"
+                                       placeholder="Type the value" min="0">
+                                <label for="form_control_1">Footer (px)</label>
+                                <span class="help-block">Type the header height(number)...</span>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                <input type="color" class="form-control" id="form_control_1"
+                                       placeholder="Type the value">
+                                <label for="form_control_1">Background</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portlet-body form" id="text-panel">
+                        <div class="form-body">
+                            <h3 class="text-info">Text Panel</h3>
+                            <hr>
+                            <div class="form-group form-md-line-input has-error">
+                                <input type="text" class="form-control" id="form_control_1"
+                                       placeholder="Type the value" min="0">
+                                <label for="form_control_1">Variable</label>
+                                <span class="help-block">Some help goes here...</span>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group form-md-line-input">
+                                        <input type="number" class="form-control" id="form_control_1"
+                                               placeholder="Type the value" min="0">
+                                        <label for="form_control_1">Position X</label>
+                                        <span class="help-block">Some help goes here...</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group form-md-line-input">
+                                        <input type="number" class="form-control" id="form_control_1"
+                                               placeholder="Type the value" min="0">
+                                        <label for="form_control_1">Position Y</label>
+                                        <span class="help-block">Some help goes here...</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                <label class="col-md-4 control-label" for="form_control_1">Style :</label>
+                                <div class="col-md-8">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default" id="text-bold">
+                                            <i class=" fa fa-bold"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default" id="text-italic">
+                                            <i class="fa fa-italic"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default" id="text-underline">
+                                            <i class="fa fa-underline"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default" id="text-stright">
+                                            <i class="fa fa-strikethrough"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                <label class="col-md-4 control-label" for="form_control_1">Alignment :</label>
+                                <div class="col-md-8">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default"
+                                                id="text-align-center">
+                                            <i class=" fa fa-align-center"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default"
+                                                id="text-align-justify">
+                                            <i class="fa fa-align-justify"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default" id="text-align-left">
+                                            <i class="fa fa-align-left"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default" id="text-align-right">
+                                            <i class="fa fa-align-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="form-group form-md-line-input">
+                                <label class="col-md-4 control-label" for="form_control_1">Color:</label>
+                                <div class="col-md-8">
+                                    <input type="color" class="form-control"
+                                           placeholder="Type the value">
+                                </div>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                <label class="col-md-4 control-label" for="form_control_1">Family :</label>
+                                <input id="text-font" type="text" value="Caudex"/>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                <label class="col-md-4 control-label" for="form_control_1">Font Size:</label>
+                                <div class="col-md-8">
+                                    <select class="form-control" id="text-font-size">
+                                        <option>---Choose the font size</option>
+                                        <option value="6pt">6 pt</option>
+                                        <option value="8pt">8 pt</option>
+                                        <option value="10pt">10 pt</option>
+                                        <option value="12pt">12 pt</option>
+                                        <option value="14pt">14 pt</option>
+                                        <option value="16pt">16 pt</option>
+                                        <option value="18pt">18 pt</option>
+                                        <option value="20pt">20 pt</option>
+                                        <option value="22pt">22 pt</option>
+                                        <option value="24pt">24 pt</option>
+                                        <option value="32pt">32 pt</option>
+                                        <option value="48pt">48 pt</option>
+                                        <option value="64pt">64 pt</option>
+                                        <option value="70pt">70 pt</option>
+                                    </select>
+                                    <div class="form-control-focus"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portlet-body form" id="image-panel">
+                        <div class="form-body">
+                            <h3 class="text-info">Image Panel</h3>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group form-md-line-input">
+                                        <input type="number" class="form-control" id="form_control_1"
+                                               placeholder="Type the value" min="0">
+                                        <label for="form_control_1">Position X</label>
+                                        <span class="help-block">Some help goes here...</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group form-md-line-input">
+                                        <input type="number" class="form-control" id="form_control_1"
+                                               placeholder="Type the value" min="0">
+                                        <label for="form_control_1">Position Y</label>
+                                        <span class="help-block">Some help goes here...</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group form-md-line-input">
+                                        <input type="number" class="form-control" id="form_control_1"
+                                               placeholder="Type the value" min="0">
+                                        <label for="form_control_1">Width</label>
+                                        <span class="help-block">Some help goes here...</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group form-md-line-input">
+                                        <input type="number" class="form-control" id="form_control_1"
+                                               placeholder="Type the value" min="0">
+                                        <label for="form_control_1">Height</label>
+                                        <span class="help-block">Some help goes here...</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                <input type="file" class="form-control" id="form_control_1"
+                                       placeholder="Type the value" min="0">
+                                <label for="form_control_1">Image:</label>
+                                <span class="help-block">Some help goes here...</span>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="table-edit" tabindex="-1" role="save" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Table Edit</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <label class="control-label col-md-3 text-center">You can make the table field.</label>
+                    <div class="col-md-9">
+                        <select multiple="multiple" class="multi-select text-center"
+                                id="my_multi_select1"
+                                name="my_multi_select1[]">
+                            <option value="first_name">First Name</option>
+                            <option value="middle_name">Middle Name</option>
+                            <option value="last_name">Last name</option>
+                            <option value="title">Title</option>
+                            <option value="gender">Gender</option>
+                            <option value="company_name">Company name</option>
+                            <option value="email">Email</option>
+                            <option value="phone_number">Phone number</option>
+                            <option value="skype">SKype</option>
+                            <option value="contact_type">Contact Type</option>
+                            <option value="birthday">Birthday</option>
+                            <option value="birthday_location">Birth Location</option>
+                            <option value="blood_group">Blood Group</option>
+                            <option value="material_status">Matrial Status</option>
+                            <option value="user_id">User Id</option>
+                            <option value="latitude">Latitude</option>
+                            <option value="longtitude">Longtitude</option>
+                            <option value="contact_id">Contact Id</option>
+                            <option value="provider_type">Provider Type</option>
+                            <option value="user_role">User Role</option>
+                            <option value="opt">OPT</option>
+                            <option value="support_need">Support Need</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1" id="table-display">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                            <th class="text-center">No</th>
+                            <th class="text-center">Name</th>
+                            <th class="text-center">Email</th>
+                            </thead>
+                            <tbody>
+                            <tr class="text-center">
+                                <td colspan="3">Database data will be shown in here</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+                <button type="button" class="btn green btn-outline" id="confirm">Confirm</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
 <!-- END CONTAINER -->
 <!--[if lt IE 9]>
 <script src="{% static 'assets/global/plugins/respond.min.js' %}"></script>
@@ -239,12 +597,196 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
 
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 <script src="{% static 'assets/custom/jquery.fontselect.js' %}"></script>
-{#<script src="{% static 'assets/custom/editor.js' %}" type="text/javascript"></script>#}
+<script src="{% static 'assets/custom/jquery.editable.js' %}" type="text/javascript"></script>
 <script>
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
+
+    $('#text-font').fontselect({
+        systemFonts: false,
+        placeholderSearch: 'Type to search...',
+        lookahead: 4
+    }).on('change', function () {
+        var font = this.value;
+        font = font.replace(/\+/g, ' ');
+        // Split font into family and weight
+        font = font.split(':');
+        var fontFamily = font[0];
+        var fontWeight = font[1] || 400;
+        if (focusId != "") {
+            $("#" + focusId + ">p").css({fontFamily: "'" + fontFamily + "'", fontWeight: fontWeight});
+        }
+    });
+
+
+    $('.editable').editable({
+        emptyMessage: '<em>Please write something...</em>',
+        callback: function (data) {
+            {#$info.hide();#}
+            {#$info.eq(0).show();#}
+        }
+    });
+
+    // click the compoment button
+    function onPlace(index) {
+        changePannel(index);
+        addComponent(index);
+    }
+
+    $('#header-panel').hide();
+    $('#footer-panel').hide();
+    $('#text-panel').hide();
+    $('#image-panel').hide();
+
+    // right sidebar change pannel
+    function changePannel(index) {
+        switch (index) {
+            case 1:
+                $('#header-panel').show();
+                $('#footer-panel').hide();
+                $('#text-panel').hide();
+                $('#image-panel').hide();
+                break;
+            case 2:
+                $('#header-panel').hide();
+                $('#footer-panel').show();
+                $('#text-panel').hide();
+                $('#image-panel').hide();
+                break;
+            case 3:
+                $('#header-panel').hide();
+                $('#footer-panel').hide();
+                $('#text-panel').show();
+                $('#image-panel').hide();
+                break;
+            case 4:
+                $('#header-panel').hide();
+                $('#footer-panel').hide();
+                $('#text-panel').hide();
+                $('#image-panel').show();
+                break;
+            case 5:
+                $('#table-edit').modal({});
+                break;
+            case 6:
+                break;
+            default:
+                $('#header-panel').hide();
+                $('#footer-panel').hide();
+                $('#text-panel').hide();
+                $('#image-panel').hide();
+                break;
+        }
+    }
+
+    $('#my_multi_select1').on('change', function () {
+        var selectedArray = $(this).val();
+        tableHeaderList = selectedArray;
+        if (selectedArray == null) {
+            tableHeaderList = [];
+        }
+        reDrawtable(tableHeaderList);
     })
+
+    function reDrawtable(headerList) {
+        $('#table-display').empty();
+        var template = '<table class="table table-bordered table-striped"><thead><th class="text-center">No</th>';
+        headerList.forEach(function (item) {
+            template += '<th class="text-center">' + item + '</th>';
+        })
+        template += '</thead>' +
+            '<tbody>' +
+            '<tr class="text-center">' +
+            '    <td colspan="' + (headerList.length + 1) + '"> Database data will be shown in here</td></tr></tbody></table>';
+        $('#table-display').append(template);
+    };
+    // add the compoment to the main content div
+    function addComponent(index) {
+        switch (index) {
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            default:
+                break;
+        }
+    }
+
+    //delete the html element using delete key
+    $('div.component').on('click', function () {
+        $('div.component').not($(this)).removeClass('ToDelete');
+        $(this).addClass('ToDelete');
+    })
+    $(document).on('keyup', function (e) {
+        if (e.which == 46) {
+            $('div.ToDelete').remove();
+        }
+    });
+    // left side bar tooltip
+    $(document).tooltip({
+        position: {
+            my: "center bottom-20",
+            at: "left right",
+            using: function (position, feedback) {
+                $(this).css(position);
+                $("<div>")
+                    .addClass("arrow")
+                    .addClass(feedback.vertical)
+                    .addClass(feedback.horizontal)
+                    .appendTo(this);
+            }
+        }
+    });
+    // resizable
+    $('.header').resizable({
+        containment: '.content',
+        handles: 's'
+    })
+    $('.footer').resizable({
+        containment: '.content',
+        handles: 'n'
+    })
+    $('.table-content').resizable({
+        containment: '.content',
+        handles: 'e'
+    })
+    $(".resizable").resizable({
+        containment: '.content',
+    });
+    // draggable
+    $('.draggable').draggable({
+        containment: ".content",
+        start: function () {
+            var offset = $(this).position();
+            var xPos = offset.left;
+            var yPos = offset.top;
+            console.log('Start x: ' + xPos);
+            console.log('Start y: ' + yPos);
+        },
+        drag: function () {
+            var offset = $(this).offset();
+            var xPos = offset.left;
+            var yPos = offset.top;
+            {#console.log('x: ' + xPos);#}
+            {#console.log('y: ' + yPos);#}
+        },
+        stop: function () {
+            var offset = $(this).position();
+            var xPos = offset.left;
+            var yPos = offset.top;
+            console.log('End x: ' + xPos);
+            console.log('End y: ' + yPos);
+        }
+    });
 </script>
 
 </body>
