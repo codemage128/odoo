@@ -126,6 +126,47 @@ License: You must have a valid license purchased only from themeforest(the above
         th, td {
             padding: 15px;
         }
+
+        .content {
+            width: 793.41px;
+            height: 1122.1px;
+        }
+
+        .component {
+            position: absolute;
+            border: 1px dotted black;
+            cursor: move;
+        }
+
+        .editable {
+            cursor: auto;
+        }
+
+        .table-component {
+            display: inline-block;
+            border: none;
+        }
+
+        .image-component {
+            display: inline-block;
+        }
+
+        .text-component {
+            position: absolute;
+            width: 100px;
+            height: 50px;
+        }
+
+        .header {
+            width: 793.41px;
+            height: 100px;
+        }
+
+        .footer {
+            bottom: 0;
+            width: 793.41px;
+            height: 100px;
+        }
     </style>
 </head>
 <!-- END HEAD -->
@@ -262,33 +303,29 @@ License: You must have a valid license purchased only from themeforest(the above
                     </a>
                 </div>
                 <div class="col-xs-8 col-md-8 margin-top-10">
-                    <div class="content bg-white" style="width: 793.41px;height: 1122.1px;">
-                        {#                        <div class="component header"#}
-                        {#                             style="position:absolute; width: 793.41px;border: 1px dotted black; height: 100px;"></div>#}
-                        {#                        <div class="component footer"#}
-                        {#                             style="position:absolute;bottom:0; width: 793.41px;border: 1px dotted black; height: 100px;"></div>#}
-                        {#                        <div class="resizable draggable component"#}
-                        {#                             style="position:absolute; cursor:move; border: 1px dotted black; width: 100px; height: 50px;">#}
-                        {#                            <div class="editable" style="cursor:auto;">That is the best way to get the money</div>#}
-                        {#                        </div>#}
-                        {#                        <div class="draggable component" style="display:inline-block; position:absolute;">#}
-                        {#                            <img class="resizable" src="http://www.google.com.br/images/srpr/logo3w.png"/>#}
-                        {#                        </div>#}
-                        {#                        <div class="table-content draggable component"#}
-                        {#                             style="display: inline-block; position:absolute;">#}
-                        {#                            <table>#}
-                        {#                                <tr>#}
-                        {#                                    <th class="editable">Double Click</th>#}
-                        {#                                    <th class="editable">Double Click</th>#}
-                        {#                                    <th class="editable">Double Click</th>#}
-                        {#                                </tr>#}
-                        {#                                <tr>#}
-                        {#                                    <th class="editable">Double Click</th>#}
-                        {#                                    <th class="editable">Double Click</th>#}
-                        {#                                    <th class="editable">Double Click</th>#}
-                        {#                                </tr>#}
-                        {#                            </table>#}
-                        {#                        </div>#}
+                    <div class="content bg-white">
+                        <div class="component header"></div>
+                        <div class="component footer"></div>
+                        <div class="resizable draggable component text-component">
+                            <div class="editable">That is the best way to get the money</div>
+                        </div>
+                        <div class="draggable component image-component">
+                            <img class="resizable" src="http://www.google.com.br/images/srpr/logo3w.png"/>
+                        </div>
+                        <div class="table-content draggable component table-component">
+                            <table>
+                                <tr>
+                                    <th class="editable">Double Click</th>
+                                    <th class="editable">Double Click</th>
+                                    <th class="editable">Double Click</th>
+                                </tr>
+                                <tr>
+                                    <th class="editable">Double Click</th>
+                                    <th class="editable">Double Click</th>
+                                    <th class="editable">Double Click</th>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <div class="col-xs-3 col-md-3 bg-white" style="height:150vh">
@@ -620,13 +657,7 @@ License: You must have a valid license purchased only from themeforest(the above
     });
 
 
-    $('.editable').editable({
-        emptyMessage: '<em>Please write something...</em>',
-        callback: function (data) {
-            {#$info.hide();#}
-            {#$info.eq(0).show();#}
-        }
-    });
+    control();
 
     // click the compoment button
     function onPlace(index) {
@@ -669,8 +700,6 @@ License: You must have a valid license purchased only from themeforest(the above
             case 5:
                 $('#table-edit').modal({});
                 break;
-            case 6:
-                break;
             default:
                 $('#header-panel').hide();
                 $('#footer-panel').hide();
@@ -700,37 +729,43 @@ License: You must have a valid license purchased only from themeforest(the above
             '<tr class="text-center">' +
             '    <td colspan="' + (headerList.length + 1) + '"> Database data will be shown in here</td></tr></tbody></table>';
         $('#table-display').append(template);
-    };
+    }
+
     // add the compoment to the main content div
     function addComponent(index) {
         switch (index) {
             case 1:
+                var template = '<div class="component header"></div>';
+                $('.content').append(template);
                 break;
             case 2:
+                var template = '<div class="component footer"></div>';
+                $('.content').append(template);
                 break;
             case 3:
+                var template = '<div class="resizable draggable component text-component">\n' +
+                    '<div class="editable">That is the best way to get the money</div>\n' +
+                    '</div>'
+                $('.content').append(template);
                 break;
             case 4:
+                var template = '<div class="draggable component image-component">\n' +
+                    '<img class="resizable" src="http://www.google.com.br/images/srpr/logo3w.png"/>\n' +
+                    '</div>';
+                $('.content').append(template);
                 break;
             case 5:
-                break;
-            case 6:
+                // table draw
                 break;
             default:
                 break;
         }
+        control();
     }
 
-    //delete the html element using delete key
-    $('div.component').on('click', function () {
-        $('div.component').not($(this)).removeClass('ToDelete');
-        $(this).addClass('ToDelete');
-    })
-    $(document).on('keyup', function (e) {
-        if (e.which == 46) {
-            $('div.ToDelete').remove();
-        }
-    });
+
+
+
     // left side bar tooltip
     $(document).tooltip({
         position: {
@@ -746,47 +781,76 @@ License: You must have a valid license purchased only from themeforest(the above
             }
         }
     });
+
+    // When the table add to the content, press the confirm button
+    $('#confirm').click(function() {
+        console.log('asdfasdf');
+        $('#table-edit').modal('hide');
+    })
+
     // resizable
-    $('.header').resizable({
-        containment: '.content',
-        handles: 's'
-    })
-    $('.footer').resizable({
-        containment: '.content',
-        handles: 'n'
-    })
-    $('.table-content').resizable({
-        containment: '.content',
-        handles: 'e'
-    })
-    $(".resizable").resizable({
-        containment: '.content',
-    });
-    // draggable
-    $('.draggable').draggable({
-        containment: ".content",
-        start: function () {
-            var offset = $(this).position();
-            var xPos = offset.left;
-            var yPos = offset.top;
-            console.log('Start x: ' + xPos);
-            console.log('Start y: ' + yPos);
-        },
-        drag: function () {
-            var offset = $(this).offset();
-            var xPos = offset.left;
-            var yPos = offset.top;
-            {#console.log('x: ' + xPos);#}
-            {#console.log('y: ' + yPos);#}
-        },
-        stop: function () {
-            var offset = $(this).position();
-            var xPos = offset.left;
-            var yPos = offset.top;
-            console.log('End x: ' + xPos);
-            console.log('End y: ' + yPos);
-        }
-    });
+    function control() {
+
+        $('.editable').editable({
+            emptyMessage: '<em>Please write something...</em>',
+            callback: function (data) {
+                {#$info.hide();#}
+                {#$info.eq(0).show();#}
+            }
+        });
+
+        $('.header').resizable({
+            containment: '.content',
+            handles: 's'
+        })
+        $('.footer').resizable({
+            containment: '.content',
+            handles: 'n'
+        })
+        $('.table-content').resizable({
+            containment: '.content',
+            handles: 'e'
+        })
+        $(".resizable").resizable({
+            containment: '.content',
+        });
+        // draggable
+        $('.draggable').draggable({
+            containment: ".content",
+            start: function () {
+                var offset = $(this).position();
+                var xPos = offset.left;
+                var yPos = offset.top;
+                console.log('Start x: ' + xPos);
+                console.log('Start y: ' + yPos);
+            },
+            drag: function () {
+                var offset = $(this).offset();
+                var xPos = offset.left;
+                var yPos = offset.top;
+                {#console.log('x: ' + xPos);#}
+                {#console.log('y: ' + yPos);#}
+            },
+            stop: function () {
+                var offset = $(this).position();
+                var xPos = offset.left;
+                var yPos = offset.top;
+                console.log('End x: ' + xPos);
+                console.log('End y: ' + yPos);
+            }
+        });
+        //delete the html element using delete key
+        $('div.component').on('click', function () {
+            $('div.component').not($(this)).removeClass('ToDelete');
+            $(this).addClass('ToDelete');
+        })
+        $(document).on('keyup', function (e) {
+            if (e.which == 46) {
+                $('div.ToDelete').remove();
+            }
+        });
+    }
+
 </script>
 
 </body>
