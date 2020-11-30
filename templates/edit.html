@@ -304,28 +304,6 @@ License: You must have a valid license purchased only from themeforest(the above
                 </div>
                 <div class="col-xs-8 col-md-8 margin-top-10">
                     <div class="content bg-white">
-                        <div class="component header"></div>
-                        <div class="component footer"></div>
-                        <div class="resizable draggable component text-component">
-                            <div class="editable">That is the best way to get the money</div>
-                        </div>
-                        <div class="draggable component image-component">
-                            <img class="resizable" src="http://www.google.com.br/images/srpr/logo3w.png"/>
-                        </div>
-                        <div class="table-content draggable component table-component">
-                            <table>
-                                <tr>
-                                    <th class="editable">Double Click</th>
-                                    <th class="editable">Double Click</th>
-                                    <th class="editable">Double Click</th>
-                                </tr>
-                                <tr>
-                                    <th class="editable">Double Click</th>
-                                    <th class="editable">Double Click</th>
-                                    <th class="editable">Double Click</th>
-                                </tr>
-                            </table>
-                        </div>
                     </div>
                 </div>
                 <div class="col-xs-3 col-md-3 bg-white" style="height:150vh">
@@ -334,9 +312,9 @@ License: You must have a valid license purchased only from themeforest(the above
                             <h3 class="text-info">Header Panel</h3>
                             <hr>
                             <div class="form-group form-md-line-input">
-                                <input type="number" class="form-control" id="form_control_1"
+                                <input type="number" class="form-control" id="header-height"
                                        placeholder="Type the value" min="0">
-                                <label for="form_control_1">Height (px)</label>
+                                <label for="header-height">Height (px)</label>
                                 <span class="help-block">Type the header height(number)...</span>
                             </div>
                             <div class="form-group form-md-line-input">
@@ -351,9 +329,9 @@ License: You must have a valid license purchased only from themeforest(the above
                             <h3 class="text-info">Footer Panel</h3>
                             <hr>
                             <div class="form-group form-md-line-input">
-                                <input type="number" class="form-control" id="form_control_1"
-                                       placeholder="Type the value" min="0">
-                                <label for="form_control_1">Footer (px)</label>
+                                <input type="number" class="form-control" id="footer-height"
+                                       placeholder="Type the value" min="0" >
+                                <label for="footer-height">Footer (px)</label>
                                 <span class="help-block">Type the header height(number)...</span>
                             </div>
                             <div class="form-group form-md-line-input">
@@ -590,6 +568,30 @@ License: You must have a valid license purchased only from themeforest(the above
     <!-- /.modal-dialog -->
 </div>
 
+
+<div class="modal fade" id="error" tabindex="-1" role="save" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Error</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <label class="control-label col-md-12 text-center">Double header or footer</label>
+                </div>
+                <div class="row">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
 <!-- END CONTAINER -->
 <!--[if lt IE 9]>
 <script src="{% static 'assets/global/plugins/respond.min.js' %}"></script>
@@ -709,6 +711,11 @@ License: You must have a valid license purchased only from themeforest(the above
         }
     }
 
+    // send the data
+    var _table_headerlist;
+    var headerFlag = false;
+    var footerFlag = false;
+
     $('#my_multi_select1').on('change', function () {
         var selectedArray = $(this).val();
         tableHeaderList = selectedArray;
@@ -716,6 +723,7 @@ License: You must have a valid license purchased only from themeforest(the above
             tableHeaderList = [];
         }
         reDrawtable(tableHeaderList);
+        _table_headerlist = tableHeaderList;
     })
 
     function reDrawtable(headerList) {
@@ -735,27 +743,56 @@ License: You must have a valid license purchased only from themeforest(the above
     function addComponent(index) {
         switch (index) {
             case 1:
-                var template = '<div class="component header"></div>';
-                $('.content').append(template);
+                if (headerFlag == false) {
+                    var template = '<div class="component header" id="header"></div>';
+                    $('.content').append(template);
+                    headerFlag = true
+                } else {
+                    $('#error').modal({});
+                }
                 break;
             case 2:
-                var template = '<div class="component footer"></div>';
-                $('.content').append(template);
+                if (footerFlag == false) {
+                    var template = '<div class="component footer" id="footer"></div>';
+                    $('.content').append(template);
+                    footerFlag = true;
+                } else {
+                    $('#error').modal({});
+                }
                 break;
             case 3:
-                var template = '<div class="resizable draggable component text-component">\n' +
-                    '<div class="editable">That is the best way to get the money</div>\n' +
+                var date = new Date();
+                var _id = date.getTime();
+                var template = '<div class="resizable draggable component text-component" data-role="text" id="' + _id + '">\n' +
+                    '<div class="editable">Double click to edit the text</div>\n' +
                     '</div>'
                 $('.content').append(template);
                 break;
             case 4:
+                var date = new Date();
+                var _id = date.getTime();
                 var template = '<div class="draggable component image-component">\n' +
-                    '<img class="resizable" src="http://www.google.com.br/images/srpr/logo3w.png"/>\n' +
+                    '<img class="resizable" src="http://www.google.com.br/images/srpr/logo3w.png" width="150px" height="100px">\n' +
                     '</div>';
                 $('.content').append(template);
                 break;
             case 5:
                 // table draw
+                var date = new Date();
+                var _id = date.getTime();
+                console.log("current data field = " + _id);
+                var template = '<div class="table-content draggable component table-component">\n' +
+                    '<table><tr>';
+                var thead = "";
+                _table_headerlist.forEach(function (item) {
+                    var _table = '<th>' + item + '</th>';
+                    thead += _table;
+                })
+                template += thead;
+                template += '</tr><tr>\n' +
+                    '<th colspan="' + (_table_headerlist.length + 1) + '">Double Click</th>\n' +
+                    '</tr>';
+                $('.content').append(template);
                 break;
             default:
                 break;
@@ -763,8 +800,36 @@ License: You must have a valid license purchased only from themeforest(the above
         control();
     }
 
+    $('.btn').click(function () {
+        // $(document).on('click', '.btn', function () {
+        var id = $(this).attr('id');
+        // var focus_id = "#" + textFocus;
+        switch (id) {
+            case 'btn-refresh':
+                $(".content").empty();
+                break;
+            case 'confirm':
+                $('#table-edit').modal('hide');
+                addComponent(5);
+                break;
+            default:
+                break;
 
-
+        }
+    })
+    $('input').change(function () {
+        var element = $(this).attr('id');
+        switch (element) {
+            case "header-height":
+                $('#header').height($(this).val());
+                break;
+            case "footer-height":
+                $('#footer').height($(this).val());
+                break;
+            default:
+                break;
+        }
+    })
 
     // left side bar tooltip
     $(document).tooltip({
@@ -782,12 +847,6 @@ License: You must have a valid license purchased only from themeforest(the above
         }
     });
 
-    // When the table add to the content, press the confirm button
-    $('#confirm').click(function() {
-        console.log('asdfasdf');
-        $('#table-edit').modal('hide');
-    })
-
     // resizable
     function control() {
 
@@ -801,11 +860,17 @@ License: You must have a valid license purchased only from themeforest(the above
 
         $('.header').resizable({
             containment: '.content',
-            handles: 's'
+            handles: 's',
+            resize: function (event, ui) {
+                $('#header-height').val(ui.size.height);
+            }
         })
         $('.footer').resizable({
             containment: '.content',
-            handles: 'n'
+            handles: 'n',
+            resize: function (event, ui) {
+                $('#footer-height').val(ui.size.height);
+            }
         })
         $('.table-content').resizable({
             containment: '.content',
@@ -813,6 +878,12 @@ License: You must have a valid license purchased only from themeforest(the above
         })
         $(".resizable").resizable({
             containment: '.content',
+            resize: function (event, ui) {
+                console.log(ui.size);
+                console.log(ui.position);
+                console.log(ui.element[0].getAttribute('data-role'));
+                console.log(ui.element[0].id)
+            }
         });
         // draggable
         $('.draggable').draggable({
