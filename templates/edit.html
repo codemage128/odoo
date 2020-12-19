@@ -275,35 +275,10 @@ License: You must have a valid license purchased only from themeforest(the above
                         <i class="fa fa-table"></i>
                         <div> Table</div>
                     </a>
-                    <a href="javascript:onPlace(-1);" class="icon-btn" data-toggle="tooltip" data-placement="right"
-                       title="???">
-                        <i class="fa fa-envelope"></i>
-                        <div></div>
-                    </a>
-                    <a href="javascript:onPlace(-1);" class="icon-btn" data-toggle="tooltip" data-placement="right"
-                       title="???">
-                        <i class="fa fa-bullhorn"></i>
-                        <div></div>
-                    </a>
-                    <a href="javascript:onPlace(-1);" class="icon-btn" data-toggle="tooltip" data-placement="right"
-                       title="???">
-                        <i class="fa fa-map-marker"></i>
-                        <div></div>
-                    </a>
-                    <a href="javascript:onPlace(-1);" class="icon-btn" data-toggle="tooltip" data-placement="right"
-                       title="???">
-                        <i class="fa fa-money"></i>
-                        <div></div>
-                    </a>
-                    <a href="javascript:onPlace(-1);" class="icon-btn" data-toggle="tooltip" data-placement="right"
-                       title="???">
-                        <i class="fa fa-plane"></i>
-                        <div></div>
-                    </a>
-                    <a href="javascript:onPlace(-1);" class="icon-btn" data-toggle="tooltip" data-placement="right"
-                       title="???">
-                        <i class="fa fa-thumbs-up"></i>
-                        <div></div>
+                    <a href="javascript:onPlace(6);" class="icon-btn" data-toggle="tooltip" data-placement="right"
+                       title="Horizontal Line">
+                        -
+                        <div> Horizontal Line</div>
                     </a>
                 </div>
                 <div class="col-xs-8 col-md-8 margin-top-10">
@@ -477,6 +452,32 @@ License: You must have a valid license purchased only from themeforest(the above
                                        placeholder="Type the value" min="0">
                                 <label for="image-src">Image:</label>
                                 <span class="help-block">Some help goes here...</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portlet-body form" id="line-horizontal-panel">
+                        <div class="form-body">
+                            <h3 class="text-info">Horizontal Panel</h3>
+                            <hr>
+                            <div class="form-group form-md-line-input">
+                                <input type="number" class="form-control" id="line-height"
+                                       placeholder="Type the value" min="0">
+                                <label for="header-height">Height (px)</label>
+                                <span class="help-block">Type the header height(number)...</span>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                <select class="form-control" id="line-style">
+                                    <option value="solid">Solid</option>
+                                    <option value="dotted">Dotted</option>
+                                    <option value="double">Double</option>
+                                    <option value="dashed">Dashed</option>
+                                </select>
+                                <label for="form_control_1">Style</label>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                <input type="color" class="form-control" id="line-background"
+                                       placeholder="Type the value">
+                                <label for="form_control_1">Background</label>
                             </div>
                         </div>
                     </div>
@@ -672,33 +673,52 @@ License: You must have a valid license purchased only from themeforest(the above
                 $('#footer-panel').hide();
                 $('#text-panel').hide();
                 $('#image-panel').hide();
+                $('#line-horizontal-panel').hide();
                 break;
             case 2:
                 $('#header-panel').hide();
                 $('#footer-panel').show();
                 $('#text-panel').hide();
                 $('#image-panel').hide();
+                $('#line-horizontal-panel').hide();
                 break;
             case 3:
                 $('#header-panel').hide();
                 $('#footer-panel').hide();
                 $('#text-panel').show();
                 $('#image-panel').hide();
+                $('#line-horizontal-panel').hide();
                 break;
             case 4:
                 $('#header-panel').hide();
                 $('#footer-panel').hide();
                 $('#text-panel').hide();
                 $('#image-panel').show();
+                $('#line-horizontal-panel').hide();
                 break;
             case 5:
                 $('#table-edit').modal({});
+                break;
+            case 6:  // horizontal line
+                $('#header-panel').hide();
+                $('#footer-panel').hide();
+                $('#text-panel').hide();
+                $('#image-panel').hide();
+                $('#line-horizontal-panel').show();
+                break;
+            case 7:  // vertical line
+                $('#header-panel').hide();
+                $('#footer-panel').hide();
+                $('#text-panel').hide();
+                $('#image-panel').hide();
+                $('#line-horizontal-panel').hide();
                 break;
             default:
                 $('#header-panel').hide();
                 $('#footer-panel').hide();
                 $('#text-panel').hide();
                 $('#image-panel').hide();
+                $('#line-horizontal-panel').hide();
                 break;
         }
     }
@@ -789,7 +809,6 @@ License: You must have a valid license purchased only from themeforest(the above
                 // table draw
                 var date = new Date();
                 var _id = date.getTime();
-                console.log("current data field = " + _id);
                 var template = '<div data-role="table" id="' + _id + '" class="table-content draggable component table-component">\n' +
                     '<table><tr>';
                 var thead = "";
@@ -801,6 +820,12 @@ License: You must have a valid license purchased only from themeforest(the above
                 template += '</tr><tr>\n' +
                     '<th colspan="' + (_table_headerlist.length + 1) + '">Double Click</th>\n' +
                     '</tr>';
+                $('.content').append(template);
+                break;
+            case 6:
+                var date = new Date();
+                var _id = date.getTime();
+                var template = '<div data-role="horizontal-line" class="resizable draggable component" id="' + _id + '" style="width: 100px"><hr id="line-hr" /></div>';
                 $('.content').append(template);
                 break;
             default:
@@ -816,6 +841,9 @@ License: You must have a valid license purchased only from themeforest(the above
             case "text-font-size":
                 var _value = $(this).val();
                 $(_id + '>div').css('font-size', _value);
+                break;
+            case "line-style":
+                $('#line-hr').css('border-top-style', $(this).val());
                 break;
         }
     })
@@ -943,6 +971,13 @@ License: You must have a valid license purchased only from themeforest(the above
                     reader.readAsDataURL(img);
                 }
                 break;
+            case "line-height":
+                var value = $(this).val() +"px"
+                $("#line-hr").css('border-top-width', value);
+                break;
+            case "line-background":
+                $("#line-hr").css('border-top-color', $(this).val());
+                break;
             default:
                 break;
         }
@@ -996,10 +1031,6 @@ License: You must have a valid license purchased only from themeforest(the above
         $(".resizable").resizable({
             containment: '.content',
             resize: function (event, ui) {
-                console.log(ui.size);
-                console.log(ui.position);
-                console.log(ui.element.context);
-                console.log(ui.element.context.id)
                 var data_role = ui.element.context.getAttribute('data-role');
             }
         });
@@ -1047,12 +1078,14 @@ License: You must have a valid license purchased only from themeforest(the above
                 $('#footer-panel').hide();
                 $('#text-panel').hide();
                 $('#image-panel').hide();
+                $('#line-horizontal-panel').hide();
             }
             if (focusId == "footer") {
                 $('#header-panel').hide();
                 $('#footer-panel').show();
                 $('#text-panel').hide();
                 $('#image-panel').hide();
+                $('#line-horizontal-panel').hide();
             }
             var data_role = $(this).data('role');
             switch (data_role) {
@@ -1061,12 +1094,21 @@ License: You must have a valid license purchased only from themeforest(the above
                     $('#footer-panel').hide();
                     $('#text-panel').show();
                     $('#image-panel').hide();
+                    $('#line-horizontal-panel').hide();
                     break;
                 case "image":
                     $('#header-panel').hide();
                     $('#footer-panel').hide();
                     $('#text-panel').hide();
                     $('#image-panel').show();
+                    $('#line-horizontal-panel').hide();
+                    break;
+                case "horizontal-line":
+                    $('#header-panel').hide();
+                    $('#footer-panel').hide();
+                    $('#text-panel').hide();
+                    $('#image-panel').hide();
+                    $('#line-horizontal-panel').show();
                     break;
                 default:
                     break;
