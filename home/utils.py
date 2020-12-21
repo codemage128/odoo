@@ -44,7 +44,7 @@ def change_to_string_from_structure(data={}):
                                   'height'] + """px; width: 100%; bottom: 0px"></p>"""
             footerString = _str
         if item['title'] == "Image":
-            _str = """<img src='http://localhost:8000""" + item['url'] + """' style="position:absolute; width: """ + \
+            _str = """<img src='http://157.230.117.157/""" + item['url'] + """' style="position:absolute; width: """ + \
                    item['size'][
                        'width'] + """px; height: """ + item['size']['height'] + """px; top: """ + item['position'][
                        'top'] + """px; left: """ + item['position']['left'] + """px" />"""
