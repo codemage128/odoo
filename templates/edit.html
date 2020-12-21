@@ -601,6 +601,23 @@ License: You must have a valid license purchased only from themeforest(the above
     <!-- /.modal-dialog -->
 </div>
 
+<div class="modal fade" id="save" tabindex="-1" role="save" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Saved</h4>
+            </div>
+            <div class="modal-body">Template is saved!</div>
+            <div class="modal-footer">
+                <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input id="templateId" value="{{ templateId }}" type="hidden" name="templateId"/>
+
 <!-- END CONTAINER -->
 <!--[if lt IE 9]>
 <script src="{% static 'assets/global/plugins/respond.min.js' %}"></script>
@@ -650,7 +667,6 @@ License: You must have a valid license purchased only from themeforest(the above
 <script src="{% static 'assets/custom/jquery.fontselect.js' %}"></script>
 <script src="{% static 'assets/custom/jquery.editable.js' %}" type="text/javascript"></script>
 <script>
-
     var templateData = [];
     control();
 
@@ -664,6 +680,7 @@ License: You must have a valid license purchased only from themeforest(the above
     $('#footer-panel').hide();
     $('#text-panel').hide();
     $('#image-panel').hide();
+    $('#line-horizontal-panel').hide();
 
     // right sidebar change pannel
     function changePannel(index) {
@@ -697,7 +714,7 @@ License: You must have a valid license purchased only from themeforest(the above
                 $('#line-horizontal-panel').hide();
                 break;
             case 5:
-                $('#table-edit').modal({});
+            {#$('#table-edit').modal({});#}
                 break;
             case 6:  // horizontal line
                 $('#header-panel').hide();
@@ -724,7 +741,7 @@ License: You must have a valid license purchased only from themeforest(the above
     }
 
     // send the data
-    var _table_headerlist;
+    var _table_headerlist = [];
     var headerFlag = false;
     var footerFlag = false;
     var focusId = "";
@@ -772,10 +789,13 @@ License: You must have a valid license purchased only from themeforest(the above
         switch (index) {
             case 1:
                 if (headerFlag == false) {
-                    var template = '<div class="component header" id="header"></div>';
+                    var date = new Date();
+                    var _id = date.getTime();
+                    var template = '<div class="component header" data-role="header" id="' + _id + '"></div>';
                     $('.content').append(template);
                     var _data = {
-                        "title": "Header"
+                        "title": "Header",
+                        "id": _id
                     }
                     templateData.push(_data);
                     headerFlag = true
@@ -785,10 +805,13 @@ License: You must have a valid license purchased only from themeforest(the above
                 break;
             case 2:
                 if (footerFlag == false) {
-                    var template = '<div class="component footer" id="footer"></div>';
+                    var date = new Date();
+                    var _id = date.getTime();
+                    var template = '<div class="component footer" data-role="footer" id="' + _id + '"></div>';
                     $('.content').append(template);
                     var _data = {
-                        "title": "Footer"
+                        "title": "Footer",
+                        "id": _id
                     }
                     templateData.push(_data);
                     footerFlag = true;
@@ -809,41 +832,23 @@ License: You must have a valid license purchased only from themeforest(the above
                 templateData.push(_data);
                 $('.content').append(template);
                 break;
-            case 4:
+            case 4:  // image add
                 var date = new Date();
                 var _id = date.getTime();
                 var _imgId = 'img' + _id;
                 var template = '<div class="draggable component image-component" data-role="image" id="' + _id + '" >\n' +
-                    '<img class="resizable" src="http://www.google.com.br/images/srpr/logo3w.png" width="150px" height="100px">\n' +
+                    '<img class="resizable" src="http://www.google.com.br/images/srpr/logo3w.png" width="150px" id="img' + _id + '" height="100px">\n' +
                     '</div>';
                 $('.content').append(template);
                 var _data = {
                     "title": "Image",
-                    "id": _id,
+                    "pid": _id,
+                    "id": "img" + _id,
                 }
                 templateData.push(_data);
                 break;
-            case 5:
-                // table draw
-                var date = new Date();
-                var _id = date.getTime();
-                var template = '<div data-role="table" id="' + _id + '" class="table-content draggable component table-component">\n' +
-                    '<table><tr>';
-                var thead = "";
-                _table_headerlist.forEach(function (item) {
-                    var _table = '<th>' + item + '</th>';
-                    thead += _table;
-                })
-                template += thead;
-                template += '</tr><tr>\n' +
-                    '<th colspan="' + (_table_headerlist.length + 1) + '">Double Click</th>\n' +
-                    '</tr>';
-                $('.content').append(template);
-                var _data = {
-                    "title": "Table",
-                    "id": _id,
-                }
-                templateData.push(_data);
+            case 5: // table draw
+                $('#table-edit').modal({});
                 break;
             case 6:
                 var date = new Date();
@@ -859,7 +864,6 @@ License: You must have a valid license purchased only from themeforest(the above
             default:
                 break;
         }
-        console.log(templateData);
         control();
     }
 
@@ -875,7 +879,6 @@ License: You must have a valid license purchased only from themeforest(the above
                         templateData[i]['style'] = {...templateData[i]['style'], "font-size": _value};
                     }
                 }
-                console.log(templateData);
                 break;
             case "line-style":
                 $('#line-hr').css('border-top-style', $(this).val());
@@ -893,12 +896,53 @@ License: You must have a valid license purchased only from themeforest(the above
         var id = $(this).attr('id');
         // var focus_id = "#" + textFocus;
         switch (id) {
+            case 'btn-prev':
+                var templateId = $('#templateId').val();
+                $.ajax({
+                    url: '/save/',
+                    type: "post",
+                    data: {data: JSON.stringify(templateData), templateId: templateId},
+                    success: function (data) {
+                        if(data.message == 'success'){
+                            window.open('/preview?templateId=' + templateId);
+                        } else {
+                            alert('error');
+                        }
+
+                    }
+                })
+                break;
+            case "btn-save":
+                $('#save').modal({});
+                break;
+            case "btn-download":
+                alert('template downloaded');
+                break;
             case 'btn-refresh':
                 $(".content").empty();
                 break;
             case 'confirm':
                 $('#table-edit').modal('hide');
-                addComponent(5);
+                var date = new Date();
+                var _id = date.getTime();
+                var template = '<div data-role="table" id="' + _id + '" class="table-content draggable component table-component">\n' +
+                    '<table><tr>';
+                var thead = "";
+                _table_headerlist.forEach(function (item) {
+                    var _table = '<th>' + item + '</th>';
+                    thead += _table;
+                })
+                template += thead;
+                template += '</tr><tr>\n' +
+                    '<th colspan="' + (_table_headerlist.length + 1) + '">Double Click</th>\n' +
+                    '</tr>';
+                $('.content').append(template);
+                var _data = {
+                    "title": "Table",
+                    "id": _id,
+                    "field": _table_headerlist
+                }
+                templateData.push(_data);
                 break;
             case "text-bold":
                 var _id = "#" + focusId;
@@ -965,6 +1009,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         }
                     }
                 } else {
+                    $("#" + focusId + '>div').css('text-decoration', "initial");
                     $("#" + focusId + '>div').css('text-decoration', "initial");
                     for (var i = 0; i < templateData.length; i++) {
                         if (templateData[i]['id'] == focusId) {
@@ -1047,14 +1092,15 @@ License: You must have a valid license purchased only from themeforest(the above
                 break;
             default:
                 break;
-
         }
+        control();
     })
     $('input').change(function () {
         var element = $(this).attr('id');
         switch (element) {
             case "header-height":
-                $('#header').height($(this).val());
+                var _id = "#" + focusId;
+                $(_id).height($(this).val());
                 for (var i = 0; i < templateData.length; i++) {
                     if (templateData[i].title == "Header") {
                         templateData[i]['size'] = {...templateData[i]['style'], "height": $(this).val()};
@@ -1062,7 +1108,8 @@ License: You must have a valid license purchased only from themeforest(the above
                 }
                 break;
             case "footer-height":
-                $('#footer').height($(this).val());
+                var _id = "#" + focusId;
+                $(_id).height($(this).val());
                 for (var i = 0; i < templateData.length; i++) {
                     if (templateData[i].title == "Footer") {
                         templateData[i]['size'] = {...templateData[i]['style'], "height": $(this).val()};
@@ -1070,18 +1117,20 @@ License: You must have a valid license purchased only from themeforest(the above
                 }
                 break;
             case "header-background":
-                $('#header').css('background', $(this).val());
+                var _id = "#" + focusId;
+                $(_id).css('background', $(this).val());
                 for (var i = 0; i < templateData.length; i++) {
                     if (templateData[i].title == "Header") {
-                        templateData[i]['style'] = {...templateData[i]['style'], "background-color": $(this).val()};
+                        templateData[i]['style'] = {...templateData[i]['style'], "backgroundColor": $(this).val()};
                     }
                 }
                 break;
             case "footer-background":
-                $('#footer').css('background', $(this).val());
+                var _id = "#" + focusId;
+                $(_id).css('background', $(this).val());
                 for (var i = 0; i < templateData.length; i++) {
                     if (templateData[i].title == "Footer") {
-                        templateData[i]['style'] = {...templateData[i]['style'], "background-color": $(this).val()};
+                        templateData[i]['style'] = {...templateData[i]['style'], "backgroundColor": $(this).val()};
                     }
                 }
                 break;
@@ -1126,11 +1175,23 @@ License: You must have a valid license purchased only from themeforest(the above
                     $('#error-image').modal({});
                 } else {
                     var img = this.files[0];
-                    var reader = new FileReader();
-                    reader.onloadend = function () {
-                        $("#" + focusId + '>div>img').attr('src', reader.result);
-                    }
-                    reader.readAsDataURL(img);
+                    var formData = new FormData();
+                    formData.append('file', this.files[0]);
+                    $.ajax({
+                        url: '/upload/',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,  // tell jQuery not to process the data
+                        contentType: false,  // tell jQuery not to set contentType
+                        success: function (data) {
+                            $("#" + focusId + '>div>img').attr('src', window.location.origin + data.url);
+                            for (var i = 0; i < templateData.length; i++) {
+                                if (templateData[i]['pid'] == focusId) {
+                                    templateData[i]['url'] = data.url;
+                                }
+                            }
+                        }
+                    });
                 }
                 break;
             case "line-height":
@@ -1223,18 +1284,26 @@ License: You must have a valid license purchased only from themeforest(the above
             resize: function (event, ui) {
                 var data_role = ui.element.context.getAttribute('data-role');
                 for (var i = 0; i < templateData.length; i++) {
-                    if (templateData[i].id == ui.element.context.getAttribute('id')) {
-                        templateData[i]['position'] = {
-                            "left": ui.position.left,
-                            "top": ui.position.top
+                    if (ui.element.context.tagName == "IMG") {
+                        if (templateData[i].id == ui.element.context.getAttribute('id')) {
+                            templateData[i]['size'] = {
+                                "height": ui.size.height.toFixed(2),
+                                "width": ui.size.width.toFixed(2)
+                            }
                         }
-                        templateData[i]['size'] = {
-                            "height": ui.size.height.toFixed(2),
-                            "width": ui.size.width.toFixed(2)
+                    } else {
+                        if (templateData[i].id == ui.element.context.getAttribute('id')) {
+                            templateData[i]['position'] = {
+                                "left": ui.position.left,
+                                "top": ui.position.top
+                            }
+                            templateData[i]['size'] = {
+                                "height": ui.size.height.toFixed(2),
+                                "width": ui.size.width.toFixed(2)
+                            }
                         }
                     }
                 }
-                console.log(templateData);
             }
         });
         // draggable
@@ -1265,8 +1334,16 @@ License: You must have a valid license purchased only from themeforest(the above
                         }
                         break;
                     case "image":
-                        $('#image-position-x').val(xPos);
-                        $('#image-position-y').val(yPos);
+                        $('#image-position-x').val(xPos.toFixed(2));
+                        $('#image-position-y').val(yPos.toFixed(2));
+                        for (var i = 0; i < templateData.length; i++) {
+                            if (templateData[i].pid == id) {
+                                templateData[i]['position'] = {
+                                    "left": xPos.toFixed(2),
+                                    "top": yPos.toFixed(2) + 15
+                                }
+                            }
+                        }
                         break;
                     case "table":
                         break;
@@ -1284,23 +1361,23 @@ License: You must have a valid license purchased only from themeforest(the above
         $('div.component').on('click', function () {
             $('div.component').not($(this)).removeClass('ToDelete');
             $(this).addClass('ToDelete');
-            focusId = $(this).attr('id')
-            if (focusId == 'header') {
-                $('#header-panel').show();
-                $('#footer-panel').hide();
-                $('#text-panel').hide();
-                $('#image-panel').hide();
-                $('#line-horizontal-panel').hide();
-            }
-            if (focusId == "footer") {
-                $('#header-panel').hide();
-                $('#footer-panel').show();
-                $('#text-panel').hide();
-                $('#image-panel').hide();
-                $('#line-horizontal-panel').hide();
-            }
+            focusId = $(this).attr('id');
             var data_role = $(this).data('role');
             switch (data_role) {
+                case "header":
+                    $('#header-panel').show();
+                    $('#footer-panel').hide();
+                    $('#text-panel').hide();
+                    $('#image-panel').hide();
+                    $('#line-horizontal-panel').hide();
+                    break;
+                case "footer":
+                    $('#header-panel').hide();
+                    $('#footer-panel').show();
+                    $('#text-panel').hide();
+                    $('#image-panel').hide();
+                    $('#line-horizontal-panel').hide();
+                    break;
                 case "text":
                     $('#header-panel').hide();
                     $('#footer-panel').hide();
@@ -1327,7 +1404,24 @@ License: You must have a valid license purchased only from themeforest(the above
             }
         })
         $(document).on('keyup', function (e) {
-            if (e.which == 46) {
+            if (e.which === 46) {
+                var _id = "#" + focusId;
+                var data_role = $(_id).data('role');
+                if (data_role == 'header') {
+                    headerFlag = false;
+                } else if (data_role == 'footer') {
+                    footerFlag = false;
+                }
+                for (var i = 0; i < templateData.length; i++) {
+                    if (templateData[i].title == "Image") {
+                        if (templateData[i].pid == focusId) {
+                            templateData.splice(i, 1);
+                        }
+                    }
+                    if (templateData[i].id == focusId) {
+                        templateData.splice(i, 1);
+                    }
+                }
                 $('div.ToDelete').remove();
             }
         });

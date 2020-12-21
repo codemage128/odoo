@@ -9,15 +9,20 @@ import io
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 import json
-from home.utils import render_to_pdf
+from home.utils import render_to_pdf, convert_html_to_pdf, change_to_string_from_structure
 from datetime import datetime
 from django.template.loader import get_template
+from django.core.files.storage import FileSystemStorage
+from django.http import JsonResponse
 import random
 import string
+import pdfkit
+config = pdfkit.configuration(wkhtmltopdf='C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe')
 
 # Create your views here.
 def index(request):
     return redirect('report')
+
 
 class ReportView(View):
     template_name = 'reports.html'
@@ -164,61 +169,57 @@ class Preview(View):
 
 
 @csrf_exempt
-def saveTemplate(request):
-    if request.method == "POST" and request.is_ajax():
-        templateId = request.POST.get('templateId')
-        content = request.POST.get('structure')
+def upload(request):
+    if request.method == "POST" and request.is_ajax() and request.FILES['file']:
+        file_val = request.FILES['file']
+        fs = FileSystemStorage()
+        filename = fs.save(file_val.name, file_val)
+        uploaded_file_url = fs.url(filename)
+        return JsonResponse({"url": uploaded_file_url})
+
+
+class GeneratePdf(View):
+    # if request.method == "POST" and request.is_ajax():
+    # templateId = request.POST.get('templateId')
+    # content = request.POST.get('structure')
+    # template = Template.objects.get(pk=templateId)
+    # template.structure = content
+    # template.save()
+    # headerlist = request.POST.get('list')
+    # headerlist = headerlist.split(",")
+    def get(self, request, *args, **kwargs):
+        templateId = request.GET.get("templateId")
         template = Template.objects.get(pk=templateId)
-        template.structure = content
-        template.save()
-        headerlist = request.POST.get('list')
-        headerlist = headerlist.split(",")
-        data = {
-            "form_template": template,
-            "headerlist": headerlist
-        }
-        return HttpResponse()
+        structure = template.structure
+        structure_json = json.loads(structure)
+        string = change_to_string_from_structure(structure_json)
+        options = {'page-size': 'B5', 'dpi': 400}
+        pdf = pdfkit.from_string(string, False, configuration=config, options=options)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        # response['Content-Disposition'] = 'attachment; filename="ourcodeworld.pdf"'
+        return response
+
+        # data = {}
+        # for item in structure_json:
+        #     print(item)
+        #     if item['title'] == "Header":
+        #         data['headerHeight'] = item['size']['height'] + "px"
+        # data = {
+        #     'pageSize': 'B5',
+        #     'data': structure_json,
+        # }
+        # print(structure_json)
         # pdf = render_to_pdf('pdf/sample.html', data)
         # return HttpResponse(pdf, content_type='application/pdf')
 
-@csrf_exempt
-class GeneratePDF(View):
-    def post(self, request, *args, **kwargs):
-        template = get_template('sample.html')
-        context = {
-            "invoice_id": 123,
-            "customer_name": "John Cooper",
-            "amount": 1399.99,
-            "today": "Today",
-        }
-        html = template.render(context)
-        pdf = render_to_pdf('sample.html', context)
-        if pdf:
-            response = HttpResponse(pdf, content_type='application/pdf')
-            filename = "Invoice_%s.pdf" % ("12341231")
-            content = "inline; filename='%s'" % (filename)
-            download = request.GET.get("download")
-            if download:
-                content = "attachment; filename='%s'" % (filename)
-            response['Content-Disposition'] = content
-            return response
-        return HttpResponse("Not found")
 
 @csrf_exempt
-def GeneratePdf(request):
-    headerlist = []
-    templateId = request.GET.get('templateId')
-    headerlist = ""
-    if request.GET.get('headerList') is "":
-        headerlist = []
-    else:
-        headerlist = request.GET.get('headerList')
-        headerlist = headerlist.split(",")
-    template = Template.objects.get(pk=templateId)
-    data = {
-        "form_template": template,
-        "headerlist": headerlist
-    }
-    pdf = render_to_pdf('pdf/sample.html', data)
-    return HttpResponse(pdf, content_type='application/pdf')
-    # return HttpResponse()
+def save(request):
+    if request.method == "POST" and request.is_ajax():
+        templateId = request.POST.get('templateId')
+        data = request.POST.get('data')
+        template = Template.objects.get(pk=templateId)
+        template.structure = data
+        template.save()
+        returnData = {"message": "success"}
+        return JsonResponse(returnData)

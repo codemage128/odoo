@@ -1,123 +1,28 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
     <title>Title</title>
     <style type="text/css">
-        body {
-            font-weight: 200;
-            font-size: 14px;
-        }
-
-        .header {
-            font-size: 20px;
-            font-weight: 100;
-            text-align: center;
-            color: #007cae;
-        }
-
-        .title {
-            font-size: 22px;
-            font-weight: 100;
-            /* text-align: right;*/
-            padding: 10px 20px 0px 20px;
-        }
-
-        .title span {
-            color: #007cae;
-        }
-
-        .details {
-            padding: 10px 20px 0px 20px;
-            text-align: left !important;
-            /*margin-left: 40%;*/
-        }
-
-        .hrItem {
-            border: none;
-            height: 1px;
-            /* Set the hr color */
-            color: #333; /* old IE */
-            background-color: #fff; /* Modern Browsers */
-        }
-
-        .content-item {
-            position: absolute;
-            top: 205.016px;
-            left: 265px;
-        }
-
-        .table {
-            width: 100%;
-            max-width: 100%;
-            margin-bottom: 5px;
-            background-color: #fff;
-        }
-
-        .table th,
-        .table td {
-            padding: 5px;
-            vertical-align: top;
-            border-top: 1px solid #000;
-            text-align: center;
-        }
-
-        .table thead th {
-            vertical-align: bottom;
-            border-bottom: 2px solid #000;
-        }
-
-        .table tbody + tbody {
-            border-top: 2px solid #000;
-        }
-
-        .table .table {
-            background-color: #fff;
-        }
-
-        .list-group {
-            display: block;
-            width: 100%;
-            list-style: none;
-            margin-top: 15px;
-            margin-bottom: 15px;
-        }
-
-        .list-group p {
-            width: 100%;
-            height: 20px;
-            line-height: 20px;
-            list-style: none;
-            font-size: 1.1em;
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
         }
     </style>
 </head>
 <body>
-<div class='wrapper'>
-    <div class='header'>
-        <p class='title'>Form Generator {{ filename }}</p>
-    </div>
-    <div>
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th>No</th>
-                {% for item in headerList %}
-                    <th>{{ item }}</th>
-                {% endfor %}
-            </tr>
-            </thead>
-            <tbody>
-            {% for index in data %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    {% for j in index %}
-                        <td>{{ j }}</td>
-                    {% endfor %}
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
+
+<p style="position:absolute; background-color: #00ccff;height: 198.00px; width: 100%; top: 0px"></p>
+<p style="position:absolute; background-color: #0088ff;height: 300.92px; width: 100%; bottom: 0px"></p><img
+        src='http://localhost:8000/media/download.png'
+        style="position:absolute; width: 84.00px; height: 56.00px; top: 28.00px; left: 30.00px"/><img
+        src='http://localhost:8000/media/1%20(1).png'
+        style="position:absolute; width: 324.00px; height: 63.00px; top: 210.00px; left: 15.00px"/>
+<p style="position:absolute; width: 138.00px; top: 15.00px; left: 124.00px; font-size: 20pt; color: black; font-weight: bold; font-style: initial; text-decoration: initial; text-align: initial;">
+    UserName</p>
+<p style="position:absolute; width: 156.00px; top: 201.00px; left: 343.00px; font-size: 20pt; color: black; font-weight: 100; font-style: initial; text-decoration: initial; text-align: initial;">
+    UserName</p>
+<hr style="position:absolute; width: 791.00px; top: 280px; left: 15px; border-style: solid; border-width: 2px; border-color: #009dff;"/>
 </body>
+
 </html>
