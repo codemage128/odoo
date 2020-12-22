@@ -17,8 +17,9 @@ from django.http import JsonResponse
 import random
 import string
 import pdfkit
+
 #windows
-# config = pdfkit.configuration(wkhtmltopdf='C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe')
+config = pdfkit.configuration(wkhtmltopdf='C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe')
 
 # Create your views here.
 def index(request):
@@ -178,7 +179,6 @@ def upload(request):
         uploaded_file_url = fs.url(filename)
         return JsonResponse({"url": uploaded_file_url})
 
-
 class GeneratePdf(View):
     # if request.method == "POST" and request.is_ajax():
     # templateId = request.POST.get('templateId')
@@ -196,13 +196,12 @@ class GeneratePdf(View):
         string = change_to_string_from_structure(structure_json)
         options = {'page-size': 'B5', 'dpi': 400}
         #windows
-        # pdf = pdfkit.from_string(string, False, configuration=config, options=options)
+        pdf = pdfkit.from_string(string, False, configuration=config, options=options)
         #linux
-        pdf = pdfkit.from_string(string, False, options=options)
+        # pdf = pdfkit.from_string(string, False, options=options)
         response = HttpResponse(pdf, content_type='application/pdf')
         # response['Content-Disposition'] = 'attachment; filename="ourcodeworld.pdf"'
         return response
-
         # data = {}
         # for item in structure_json:
         #     print(item)

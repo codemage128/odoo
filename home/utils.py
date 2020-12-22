@@ -6,19 +6,20 @@ from home.models import Data, Template
 import json
 from django.forms.models import model_to_dict
 from django.core import serializers
+from home.models import Template, User, Address, Data
 
 
 def change_to_string_from_structure(data={}):
-    returnString = """<p style="position:absolute; background-color: #03A9F4;height: 100px; width: 100%; top: 0px"></p>
-   <p style="position:absolute; background-color: #03A9F4;height: 50px; width: 100%; bottom: 0px"></p>
-   <img src="https://www.gstatic.com/webp/gallery3/1.sm.png"
-         style="position:absolute; width: 150px; top: 150px; left: 50px" />
-   <p style="position:absolute; width: 150px; top: 150px; left: 250px; font-size: 20px; color: blue;">Name: Lose</p>
-   <hr
-      style="position:absolute; width: 200px; top: 200px; left: 250px; border-style: dashed; border-width: 2px; border-color: green;" />
-   <p style="position:absolute; width: 150px; top: 250px; left: 250px; font-size: 20px; color: blue;">Category:
-      Flower</p>
-   <hr style="position:absolute; width: 200px; top: 300px; left: 250px; border-style: dashed; border-width: 2px; border-color: green;" />"""
+    styleString = """<style type="text/css">
+    table,
+    th,
+    td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        height: 40px;
+        text-align: center
+    }
+</style>"""
     headerString = ""
     footerString = ""
     imageString = ""
@@ -44,7 +45,7 @@ def change_to_string_from_structure(data={}):
                                   'height'] + """px; width: 100%; bottom: 0px"></p>"""
             footerString = _str
         if item['title'] == "Image":
-            _str = """<img src='http://157.230.117.157/""" + item['url'] + """' style="position:absolute; width: """ + \
+            _str = """<img src='http://157.230.117.157""" + item['url'] + """' style="position:absolute; width: """ + \
                    item['size'][
                        'width'] + """px; height: """ + item['size']['height'] + """px; top: """ + item['position'][
                        'top'] + """px; left: """ + item['position']['left'] + """px" />"""
@@ -77,7 +78,6 @@ def change_to_string_from_structure(data={}):
                    item['content'] + variable + """</p>"""
             textString += _str
         if item['title'] == "Line":
-            print(item)
             borderStyle = "solid"
             borderWidth = "2px"
             borderTopColor = 'black'
@@ -90,12 +90,35 @@ def change_to_string_from_structure(data={}):
                 borderTopColor = item['style']['border-style']
             _str = """<hr style="position:absolute; width: """ + item['size']['width'] + """px; top: """ + \
                    str(item['position']['top']) + """px; left: """ + str(item['position'][
-                       'left']) + """px; border-style: """ + borderStyle + """; border-width: """ + borderWidth + """; border-color: """ + borderTopColor + """;" />"""
+                                                                             'left']) + """px; border-style: """ + borderStyle + """; border-width: """ + borderWidth + """; border-color: """ + borderTopColor + """;" />"""
             lineString += _str
         if item['title'] == "Table":
-
-            pass
-    returnString = headerString + footerString + imageString + textString + lineString + tableString
+            fieldList = item['field']
+            data = Data.objects.all()
+            _str = """<table style="position:absolute; width: """ + item['size']['width'] + """px; top: """ + \
+                   item['position']['top'] + """px; left: """ + item['position']['left'] + """px">"""
+            _head = "<tr><td>#</td>"
+            for ele in fieldList:
+                _th = """<td>""" + ele + """</td>"""
+                _head += _th
+            _head += "</tr>"
+            _str += _head
+            index = 0
+            for row in data:
+                index = index + 1
+                obj = row
+                _tr = """<tr><td>""" + str(index) + """</td>"""
+                for i in range(len(fieldList)):
+                    field_name = fieldList[i]
+                    field_object = Data._meta.get_field(field_name)
+                    field_value = getattr(obj, field_object.attname)
+                    _td = """<td>""" + field_value + """</td>"""
+                    _tr += _td
+                _tr += "</tr>"
+                _str += _tr
+            _str += "</table>"
+            tableString += _str
+    returnString = styleString + headerString + footerString + imageString + textString + lineString + tableString
     print(returnString)
     return returnString
 

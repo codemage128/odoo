@@ -1277,7 +1277,17 @@ License: You must have a valid license purchased only from themeforest(the above
         })
         $('.table-content').resizable({
             containment: '.content',
-            handles: 'e'
+            handles: 'e',
+            resize: function(event, ui){
+                for (var i = 0; i < templateData.length; i++) {
+                    if (templateData[i].title === "Table") {
+                        templateData[i]['size'] = {
+                            "height": ui.size.height.toFixed(2),
+                            "width": ui.size.width.toFixed(2)
+                        }
+                    }
+                }
+            }
         })
         $(".resizable").resizable({
             containment: '.content',
@@ -1346,7 +1356,26 @@ License: You must have a valid license purchased only from themeforest(the above
                         }
                         break;
                     case "table":
+                        for (var i = 0; i < templateData.length; i++) {
+                            if (templateData[i].id == id) {
+                                templateData[i]['position'] = {
+                                    "left": xPos.toFixed(2),
+                                    "top": yPos.toFixed(2)
+                                }
+                            }
+                        }
                         break;
+                    case "horizontal-line":
+                        for (var i = 0; i < templateData.length; i++) {
+                            if (templateData[i].id == id) {
+                                templateData[i]['position'] = {
+                                    "left": xPos.toFixed(2),
+                                    "top": yPos.toFixed(2) + 15
+                                }
+                            }
+                        }
+                        break;
+
                     default:
                         break;
                 }
